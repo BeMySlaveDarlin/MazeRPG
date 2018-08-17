@@ -17,7 +17,8 @@ $loader->registerDirs(
 
 $loader->registerNamespaces(
     [
-        "Bemyslavedarlin"  => $config->application->libraryDir."bemyslavedarlin/",
+        "Bemyslavedarlin\Helpers"  => $config->application->libraryDir."bemyslavedarlin/helpers",
+        "Bemyslavedarlin\Traits"  => $config->application->libraryDir."bemyslavedarlin/traits",
     ]
 );
 

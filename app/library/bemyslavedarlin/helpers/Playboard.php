@@ -4,10 +4,10 @@ namespace Bemyslavedarlin\Helpers;
 use Phalcon\Mvc\User\Plugin;
 
 /**
- * Class Actions
+ * Class Playboard
  * @package Bemyslavedarlin\Helpers
  */
-class Actions extends Plugin
+class Playboard extends Plugin
 {
 
 }

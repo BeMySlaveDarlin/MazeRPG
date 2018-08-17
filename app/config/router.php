@@ -1,7 +1,9 @@
 <?php
 
-$router = $di->getRouter();
+$router = $di->getRouter(false);
 
-// Define your routes here
+$router->setDefaults( [ "controller" => "index", "action" => "index", ] );
+$router->add( "/index/ajax", [ "controller" => "index", "action" => "ajax", ] );
+$router->add( "/ajax", [ "controller" => "index", "action" => "ajax", ] );
 
 $router->handle();

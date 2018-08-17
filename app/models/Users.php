@@ -87,6 +87,11 @@ class Users extends Model
     {
         $this->setSchema("maze");
         $this->setSource("users");
+        $this->hasMany(
+            'user_id',
+            'actions',
+            'user_id'
+        );
     }
 
     /**

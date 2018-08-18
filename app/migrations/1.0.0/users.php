@@ -39,13 +39,22 @@ class UsersMigration_100 extends Migration
                         ]
                     ),
                     new Column(
+                        'username',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => true,
+                            'size' => 255,
+                            'after' => 'session_id'
+                        ]
+                    ),
+                    new Column(
                         'room',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'default' => "1",
                             'notNull' => true,
                             'size' => 11,
-                            'after' => 'session_id'
+                            'after' => 'username'
                         ]
                     ),
                     new Column(
@@ -118,6 +127,7 @@ class UsersMigration_100 extends Migration
                 'indexes' => [
                     new Index('PRIMARY', ['user_id'], 'PRIMARY'),
                     new Index('session_id', ['session_id'], 'UNIQUE'),
+                    new Index('username', ['username'], null),
                     new Index('room', ['room'], null),
                     new Index('current_health', ['current_health'], null),
                     new Index('base_health', ['base_health'], null),

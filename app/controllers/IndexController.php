@@ -15,9 +15,7 @@ class IndexController extends ControllerBase
     
     public function ajaxAction()
     {
-		$this->view->setRenderLevel(
-		    View::LEVEL_MAIN_LAYOUT
-		);
+		$this->view->setRenderLevel( View::LEVEL_MAIN_LAYOUT );
     }
 
 }

@@ -26,6 +26,13 @@ class Users extends Model
 
     /**
      *
+     * @var string
+     * @Column(column="username", type="string", length=255, nullable=false)
+     */
+    public $username;
+
+    /**
+     *
      * @var integer
      * @Column(column="room", type="integer", length=11, nullable=false)
      */

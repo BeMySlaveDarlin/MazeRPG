@@ -15,13 +15,6 @@ return new \Phalcon\Config([
         'dbname'      => 'maze',
         'charset'     => 'utf8',
     ],
-    'character' => [
-        'level'         => '1',
-        'room'          => '00',
-        'health'        => '5',
-        'attack'        => '1',
-        'points'        => '0',
-    ],
     'application' => [
         'appDir'         => APP_PATH . '/',
         'controllersDir' => APP_PATH . '/controllers/',

@@ -238,7 +238,7 @@ trait ControllerAjax
 		$hpDiff = $this->user->level * $boss >= $this->user->attack_value ?
 			$this->user->level * $boss - $this->user->attack_value : 0;
 		$this->user->health_value -= $hpDiff;
-		$this->user->attack_value += 1;
+		$this->user->attack_value += rand(0,1);
 		$this->user->boss_count += 1;
 		$this->user->points += 2;
 	}

@@ -23,7 +23,6 @@ trait ControllerAjax
     private function setUsername()
 	{
 		$username = $this->request->get('username');
-		
 		if(!empty($username))
 		{
 			$user = \Users::findFirst(['username' => $username])->toArray();

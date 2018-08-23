@@ -39,7 +39,6 @@ class IndexController extends ControllerBase
     public function ajaxAction()
     {
     	$this->view->setRenderLevel( View::LEVEL_NO_RENDER );
-    	
     	//Data processing
         $mode = $this->request->get('mode');
         if(!empty($mode))

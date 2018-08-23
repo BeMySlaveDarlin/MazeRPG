@@ -105,6 +105,9 @@ $di->set('flash', function () {
  * Start the session the first time some component request the session service
  */
 $di->setShared('session', function () {
+    ini_set('session.gc_maxlifetime', 604800);
+    session_set_cookie_params(604800);
+    
     $session = new SessionAdapter();
     $session->start();
 

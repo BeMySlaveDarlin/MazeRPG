@@ -1,0 +1,16 @@
+{
+    "name": "bmsd/maze",
+    "description": "Maze RPG Tactics",
+    "type": "project",
+    "require": {
+        "nubs/random-name-generator": "^2.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "BeMySlaveDarlin RPG",
+            "email": "bemyslavedarlin@gmail.com"
+        }
+    ],
+    "minimum-stability": "alpha"
+}

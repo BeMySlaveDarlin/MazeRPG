@@ -1,7 +1,54 @@
-<div class="page-header">
-    <h1>Congratulations!</h1>
+<div id="wrapper">
+    <h1>Maze RPG Tactics</h1>
+    
+    <div class="content">
+        <div class="status-bar box-shadow">
+            <?
+            foreach($data['status'] as $div)
+            {
+                echo $div;
+            }
+            ?>
+        </div>
+        <div class="playboard box-shadow">
+            <?=$data['playboard']?>
+        </div>
+        <div class="info-bar box-shadow">
+            <div class="board-actions">
+                <? if(!empty($data['user']['username'])){?>
+                    <div class="refresh-button">Refresh</div>
+                    <div class="reset-button">Full reset</div>
+                <?}?>
+            </div>
+            <div class="top-players">
+                <? if(!empty($data['top'])){?>
+                    <h2>TOP PLAYERS</h2>
+                    <div class="player">
+                        <div class="player-username">
+                            IGN
+                        </div>
+                        <div class="player-points">
+                            POINTS
+                        </div>
+                        <div class="player-bosses">
+                            BK
+                        </div>
+                    </div>
+                    <? foreach($data['top'] as $player){ ?>
+                        <div class="player">
+                            <div class="player-username">
+                                <?=$player->username?>
+                            </div>
+                            <div class="player-points">
+                                <?=$player->points?>
+                            </div>
+                            <div class="player-bosses">
+                                <?=$player->boss_count?>
+                            </div>
+                        </div>
+                    <? } ?>
+                <?}?>
+            </div>
+        </div>
+    </div>
 </div>
-
-<p>You're now flying with Phalcon. Great things are about to happen!</p>
-
-<p>This page is located at <code>views/index/index.phtml</code></p>

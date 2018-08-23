@@ -60,18 +60,8 @@ class Actions extends Model
         $this->setSchema("maze");
         $this->setSource("actions");
         $this->hasOne(
-            'item_id',
-            'items',
-            'item_id'
-        );
-        $this->hasOne(
-            'boss_id',
-            'bosses',
-            'boss_id'
-        );
-        $this->hasOne(
             'user_id',
-            'users',
+            'Users',
             'user_id'
         );
     }

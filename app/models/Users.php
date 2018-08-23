@@ -89,7 +89,7 @@ class Users extends Model
         $this->setSource("users");
         $this->hasMany(
             'user_id',
-            'actions',
+            'Actions',
             'user_id'
         );
     }

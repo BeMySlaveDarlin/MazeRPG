@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    $( document ).tooltip();
+
     $( ".auth-form" ).submit(function(e)
     {
         e.preventDefault();
@@ -19,8 +21,8 @@ $(document).ready(function () {
                         alert(response.message);
                         $('.auth-board').remove();
                         $('.board-actions').html(
-                            '<div class="refresh-button">Refresh</div>' +
-                            '<div class="reset-button">Full reset</div>'
+                            '<div class="refresh-button" title="Refreshes current room">Refresh</div>' +
+                            '<div class="reset-button" title="Resets to level 1 room 0">Full reset</div>'
                         );
                         $('.playboard').html(response.board);
                         $('#username').text(response.user.username);

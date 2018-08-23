@@ -44,7 +44,7 @@ class Renderer extends Plugin
 			implode(
 				"",
 				[
-					'<form class="auth-form" method="POST" action="auth">',
+					'<form class="auth-form" title="Type down you preferred username" method="POST" action="auth">',
 						'<input type="hidden" name="mode" value="setUsername">',
 						'<input type="text" class="auth-input-username" name="username" value="" placeholder="Enter Name">',
 						'<input type="submit" class="auth-input-submit" value="OK">',
@@ -78,31 +78,31 @@ class Renderer extends Plugin
 	private function renderStatus($data)
 	{
 		$html['username'] = $this->renderDiv(
-			['class' => 'text-bar right-border', 'id' => 'username'],
+			['class' => 'text-bar right-border', 'id' => 'username', 'title' => 'Username'],
 			!empty($data['username']) ? $data['username'] : '- NONAME -'
 		);
 		$html['level'] = $this->renderDiv(
-			['class' => 'text-bar', 'id' => 'level'],
+			['class' => 'text-bar', 'id' => 'level', 'title' => 'Level'],
 			"LVL: " . $data['level']
 		);
 		$html['health'] = $this->renderDiv(
-			['class' => 'health-bar', 'id' => 'health'],
+			['class' => 'health-bar', 'id' => 'health', 'title' => 'Health Points'],
 			$data['health_value']
 		);
 		$html['attack'] = $this->renderDiv(
-			['class' => 'attack-bar', 'id' => 'attack'],
+			['class' => 'attack-bar', 'id' => 'attack', 'title' => 'Attack Power'],
 			$data['attack_value']
 		);
 		$html['boss'] = $this->renderDiv(
-			['class' => 'boss-bar', 'id' => 'boss'],
+			['class' => 'boss-bar', 'id' => 'boss', 'title' => 'Bosses Killed'],
 			(int)$data['boss_count']
 		);
 		$html['points'] = $this->renderDiv(
-			['class' => 'points-bar', 'id' => 'points'],
+			['class' => 'points-bar', 'id' => 'points', 'title' => 'Ppcc Points'],
 			(int)$data['points']
 		);
 		$html['room'] = $this->renderDiv(
-			['class' => 'text-bar', 'id' => 'room'],
+			['class' => 'text-bar', 'id' => 'room', 'title' => 'Current level room'],
 			"ROOM: " . $data['room']
 		);
 		
@@ -168,7 +168,7 @@ class Renderer extends Plugin
 		return $room == '79' ? $this->renderDiv(
 			['class' => 'action'],
 			$this->renderDiv(
-				['class' => 'last-room', 'title' => 'To next level'],
+				['class' => 'last-room', 'title' => 'Last room of this level'],
 				''
 			)
 		) : false;
@@ -183,8 +183,10 @@ class Renderer extends Plugin
 	private function getCharacter($data, $room = '01')
 	{
 		$character = $data['user_id'] % 2 == 0 ? '1' : ($data['user_id'] % 3 == 0 ? '2' : '3');
+		$character = $data['health_value'] > 0 ? $character : 'dead';
+		$title = $data['health_value'] > 0 ? 'You current location' : 'You are dead. Reset the game.';
 		$character = $this->renderDiv(
-			['class' => 'action'],
+			['class' => 'action', 'title' => $title],
 			'<img height="100%"  src="/img/characters/'.$character.'.gif" />'
 		);
 		return $room == $data['room'] ?
@@ -199,9 +201,15 @@ class Renderer extends Plugin
 	 */
 	private function getLastAction($actions, $room = '01')
 	{
+		$bonus = [
+			'item' => '+1&#9825;',
+			'point' => '+1&#9719;',
+			'monster' => '- 1 to X &#9825; | +1&#9719;',
+			'boss' => '- 1 to X &#9825; | +2&#9719; | +1&#9876;',
+		];
 		return !empty($actions[$room]) ?
 			$this->renderDiv(
-				['class' => 'action'],
+				['class' => 'action', 'title' => $bonus[$actions[$room]['status']]],
 				$this->renderDiv(
 					['class' => 'action-done action-'.$actions[$room]['status']],
 					''
@@ -243,8 +251,12 @@ class Renderer extends Plugin
 	private function renderAction($direction = 'left')
 	{
 		$action = $this->getAction();
-		$title = $action == 'item' ? 'Health Potion' : 'Progress Points';
-		$title = in_array($action, ['monster', 'boss']) ? $this->generator->getName() : $title;
+		$title = $action == 'item' ? 'Health Potion +1&#9825;' : 'Progress Points +1&#9719;';
+		if(in_array($action, ['monster', 'boss']))
+		{
+			$title  = $this->generator->getName();
+			$title .= $this->generator->getName() . ($action == 'boss' ? ': +2&#9719;' : '+1&#9719;');
+		}
 		
 		return $this->renderDiv(
 			['class' => 'action'],

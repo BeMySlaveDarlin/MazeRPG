@@ -3,6 +3,7 @@ body, html, #wrapper
     display: block;
     position: relative;
     width: 100%;
+    min-width: 1024px;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -17,8 +18,8 @@ body, html, #wrapper
 {
     background: url('/img/interface/bg.jpg');
     background-position: center center;
-    -webkit-background-size: cover;
-    background-size: cover;
+    -webkit-background-size: contain;
+    background-size: contain;
 }
 
 h1{

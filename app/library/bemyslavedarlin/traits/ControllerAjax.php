@@ -146,8 +146,8 @@ trait ControllerAjax
 	 */
     private function setReset()
 	{
-        $user = \Users::findFirst($this->user->user_id);
-        $actions = \Actions::find(['user_id' => $this->user->user_id]);
+        $user = \Users::findFirst([ 'conditions' => 'user_id = ' . $this->user->user_id ]);
+        $actions = \Actions::find([ 'conditions' => 'user_id = ' . $this->user->user_id ]);
         foreach($actions as $action)
         {
         	$action->delete();
@@ -238,7 +238,7 @@ trait ControllerAjax
 		$hpDiff = $this->user->level * $boss >= $this->user->attack_value ?
 			$this->user->level * $boss - $this->user->attack_value : 0;
 		$this->user->health_value -= $hpDiff;
-		$this->user->attack_value += rand(0,1);
+		$this->user->attack_value += floor(rand(1,5)/5);
 		$this->user->boss_count += 1;
 		$this->user->points += 2;
 	}

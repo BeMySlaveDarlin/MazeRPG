@@ -27,7 +27,7 @@ class ControllerBase extends Controller
 	protected function getUser()
 	{
 		$session_id = $this->session->getId();
-		$this->user = \Users::findFirst(['session_id' => $session_id]);
+		$this->user = \Users::findFirst(['conditions' => "session_id = '" . $session_id . "'"]);
 		if (!$this->user)
 		{
 			$this->user             = new \Users();

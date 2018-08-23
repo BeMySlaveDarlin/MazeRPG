@@ -50,10 +50,10 @@ class UsersMigration_100 extends Migration
                     new Column(
                         'room',
                         [
-                            'type' => Column::TYPE_INTEGER,
-                            'default' => "1",
+                            'type' => Column::TYPE_CHAR,
+                            'default' => "00",
                             'notNull' => true,
-                            'size' => 11,
+                            'size' => 2,
                             'after' => 'username'
                         ]
                     ),
@@ -68,41 +68,21 @@ class UsersMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'current_health',
+                        'health_value',
                         [
                             'type' => Column::TYPE_INTEGER,
-                            'default' => "5",
                             'notNull' => true,
-                            'size' => 3,
+                            'size' => 11,
                             'after' => 'level'
                         ]
                     ),
                     new Column(
-                        'base_health',
-                        [
-                            'type' => Column::TYPE_INTEGER,
-                            'default' => "5",
-                            'notNull' => true,
-                            'size' => 3,
-                            'after' => 'current_health'
-                        ]
-                    ),
-                    new Column(
-                        'current_attack',
+                        'attack_value',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'notNull' => true,
                             'size' => 11,
-                            'after' => 'base_health'
-                        ]
-                    ),
-                    new Column(
-                        'base_attack',
-                        [
-                            'type' => Column::TYPE_INTEGER,
-                            'notNull' => true,
-                            'size' => 11,
-                            'after' => 'current_attack'
+                            'after' => 'health_value'
                         ]
                     ),
                     new Column(
@@ -112,15 +92,24 @@ class UsersMigration_100 extends Migration
                             'default' => "CURRENT_TIMESTAMP",
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'base_attack'
+                            'after' => 'attack_value'
                         ]
                     ),
                     new Column(
-                        'death_count',
+                        'boss_count',
+                        [
+                            'type' => Column::TYPE_INTEGER,
+                            'default' => "0",
+                            'size' => 11,
+                            'after' => 'start_dttm'
+                        ]
+                    ),
+                    new Column(
+                        'pionts',
                         [
                             'type' => Column::TYPE_INTEGER,
                             'size' => 11,
-                            'after' => 'start_dttm'
+                            'after' => 'boss_count'
                         ]
                     )
                 ],
@@ -128,14 +117,12 @@ class UsersMigration_100 extends Migration
                     new Index('PRIMARY', ['user_id'], 'PRIMARY'),
                     new Index('session_id', ['session_id'], 'UNIQUE'),
                     new Index('username', ['username'], null),
-                    new Index('room', ['room'], null),
-                    new Index('current_health', ['current_health'], null),
-                    new Index('base_health', ['base_health'], null),
                     new Index('level', ['level'], null),
-                    new Index('death_count', ['death_count'], null),
-                    new Index('current_attack', ['current_attack'], null),
-                    new Index('base_attack', ['base_attack'], null),
-                    new Index('start_dttm', ['start_dttm'], null)
+                    new Index('room', ['room'], null),
+                    new Index('health_value', ['health_value'], null),
+                    new Index('attack_value', ['attack_value'], null),
+                    new Index('start_dttm', ['start_dttm'], null),
+                    new Index('points', ['points'], null)
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',

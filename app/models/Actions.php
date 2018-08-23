@@ -33,31 +33,10 @@ class Actions extends Model
 
     /**
      *
-     * @var integer
-     * @Column(column="step", type="integer", length=11, nullable=false)
-     */
-    public $step;
-
-    /**
-     *
-     * @var integer
-     * @Column(column="room", type="integer", length=11, nullable=false)
+     * @var string
+     * @Column(column="room", type="string", length=2, nullable=false)
      */
     public $room;
-
-    /**
-     *
-     * @var integer
-     * @Column(column="boss_id", type="integer", length=11, nullable=true)
-     */
-    public $boss_id;
-
-    /**
-     *
-     * @var integer
-     * @Column(column="item_id", type="integer", length=11, nullable=true)
-     */
-    public $item_id;
 
     /**
      *

@@ -33,8 +33,8 @@ class Users extends Model
 
     /**
      *
-     * @var integer
-     * @Column(column="room", type="integer", length=11, nullable=false)
+     * @var string
+     * @Column(column="room", type="string", length=2, nullable=false)
      */
     public $room;
 
@@ -48,30 +48,16 @@ class Users extends Model
     /**
      *
      * @var integer
-     * @Column(column="current_health", type="integer", length=3, nullable=false)
+     * @Column(column="health_value", type="integer", length=3, nullable=false)
      */
-    public $current_health;
+    public $health_value;
 
     /**
      *
      * @var integer
-     * @Column(column="base_health", type="integer", length=3, nullable=false)
+     * @Column(column="attack_value", type="integer", length=11, nullable=false)
      */
-    public $base_health;
-
-    /**
-     *
-     * @var integer
-     * @Column(column="current_attack", type="integer", length=11, nullable=false)
-     */
-    public $current_attack;
-
-    /**
-     *
-     * @var integer
-     * @Column(column="base_attack", type="integer", length=11, nullable=false)
-     */
-    public $base_attack;
+    public $attack_value;
 
     /**
      *
@@ -83,9 +69,16 @@ class Users extends Model
     /**
      *
      * @var integer
-     * @Column(column="death_count", type="integer", length=11, nullable=true)
+     * @Column(column="boss_count", type="integer", length=11, nullable=true)
      */
-    public $death_count;
+    public $boss_count;
+
+    /**
+     *
+     * @var integer
+     * @Column(column="points", type="integer", length=11, nullable=true)
+     */
+    public $points;
 
     /**
      * Initialize method for model.

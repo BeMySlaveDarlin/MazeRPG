@@ -48,37 +48,12 @@ class ActionsMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'step',
-                        [
-                            'type' => Column::TYPE_INTEGER,
-                            'notNull' => true,
-                            'size' => 11,
-                            'after' => 'level'
-                        ]
-                    ),
-                    new Column(
                         'room',
                         [
-                            'type' => Column::TYPE_INTEGER,
+                            'type' => Column::TYPE_CHAR,
                             'notNull' => true,
-                            'size' => 11,
-                            'after' => 'step'
-                        ]
-                    ),
-                    new Column(
-                        'boss_id',
-                        [
-                            'type' => Column::TYPE_INTEGER,
-                            'size' => 11,
-                            'after' => 'room'
-                        ]
-                    ),
-                    new Column(
-                        'item_id',
-                        [
-                            'type' => Column::TYPE_INTEGER,
-                            'size' => 11,
-                            'after' => 'boss_id'
+                            'size' => 2,
+                            'after' => 'level'
                         ]
                     ),
                     new Column(
@@ -87,7 +62,7 @@ class ActionsMigration_100 extends Migration
                             'type' => Column::TYPE_CHAR,
                             'notNull' => true,
                             'size' => 1,
-                            'after' => 'item_id'
+                            'after' => 'room'
                         ]
                     ),
                     new Column(
@@ -106,11 +81,8 @@ class ActionsMigration_100 extends Migration
                     new Index('user_id', ['user_id'], null),
                     new Index('level', ['level'], null),
                     new Index('room', ['room'], null),
-                    new Index('boss_id', ['boss_id'], null),
-                    new Index('item_id', ['item_id'], null),
                     new Index('status', ['status'], null),
-                    new Index('dttm', ['dttm'], null),
-                    new Index('step', ['step'], null)
+                    new Index('dttm', ['dttm'], null)
                 ],
                 'options' => [
                     'TABLE_TYPE' => 'BASE TABLE',

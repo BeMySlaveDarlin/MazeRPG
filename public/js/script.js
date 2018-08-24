@@ -22,7 +22,7 @@ $(document).ready(function () {
                         $('.auth-board').remove();
                         $('.board-actions').html(
                             '<div class="refresh-button" title="Refreshes current room">Refresh</div>' +
-                            '<div class="reset-button" title="Resets to level 1 room 0">Full reset</div>'
+                            '<div class="reset-button" title="Resets to level 1 room 0">New game</div>'
                         );
                         $('.playboard').html(response.board);
                         $('#username').text(response.user.username);
@@ -83,6 +83,7 @@ $(document).ready(function () {
                 if(response.status === 'success')
                 {
                     $('.playboard').html(response.board);
+                    $('.points-bar').text(response.user.points);
                 }else{
                     console.log(response);
                     alert(response.message);

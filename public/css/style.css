@@ -5,6 +5,7 @@ body, html, #wrapper
     width: 100%;
     min-width: 1024px;
     height: 100%;
+    min-height: 1024px;
     margin: 0;
     padding: 0;
     color: white;
@@ -230,7 +231,7 @@ h1{
     width: 300px;
     height: 452px;
     margin: auto;
-    margin-top: 40px;
+    margin-top: 20px;
     padding: 10px;
     text-align: center;
 }

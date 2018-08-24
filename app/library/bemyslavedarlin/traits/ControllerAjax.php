@@ -125,6 +125,8 @@ trait ControllerAjax
         if(!empty($userData['username']))
         {
 	        $html = $this->renderer->render($userData, 'rooms');
+	        $this->user->points--;
+	        $this->user->save();
 			
 			$response = [
 				'status' => 'success',

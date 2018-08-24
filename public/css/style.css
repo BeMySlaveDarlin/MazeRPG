@@ -17,10 +17,10 @@ body, html, #wrapper
 
 #wrapper
 {
-    background: url('/img/interface/bg.jpg');
+    background: url('/img/interface/bg.jpg') no-repeat;
     background-position: center center;
-    -webkit-background-size: contain;
-    background-size: contain;
+    -webkit-background-size: cover;
+    background-size: cover;
 }
 
 h1{

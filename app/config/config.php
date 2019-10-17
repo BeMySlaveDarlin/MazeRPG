@@ -10,8 +10,8 @@ return new \Phalcon\Config([
     'database' => [
         'adapter'     => 'Mysql',
         'host'        => 'localhost',
-        'username'    => 'maze_user',
-        'password'    => '394EJnBxWBanQMjZ',
+        'username'    => 'root',
+        'password'    => 'password',
         'dbname'      => 'maze',
         'charset'     => 'utf8',
     ],

@@ -1,6 +1,5 @@
-/.idea/*
-/.phalcon/*
-/cache/*
-/tpl/*
-adminer.php
-/public/*.txt
+.idea/
+app/views/layouts/
+cache/
+public/files/
+public/temp/

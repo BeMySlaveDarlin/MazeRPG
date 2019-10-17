@@ -12,12 +12,14 @@ class IndexController extends ControllerBase
     
     public function indexAction()
     {
-        $this->setRefresh();
-        $viewData['user'] = $this->getFormattedUserData();
-        $viewData['top'] = $this->getTopPlayers();
-        $viewData['status'] = $this->renderer->render($viewData['user'], 'status');
-        $viewData['playboard'] = $this->renderer->render($viewData['user'], 'playboard');
-        $this->view->data = $viewData;
+        $gameData['user'] = $this->getFormattedUserData();
+        $gameData['players'] = $this->getTopPlayers()->toArray();
+        $gameData['statuses'] = $this->renderer->render($gameData['user'], 'status');
+        $gameData['playboard'] = $this->renderer->render($gameData['user'], 'playboard');
+        
+        $this->calcUserPoints();
+        
+        $this->view->game = (object)$gameData;
     }
     
     /**

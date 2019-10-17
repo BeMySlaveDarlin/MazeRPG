@@ -8,15 +8,19 @@ $router->setDefaults(
         "action"     => "index",
     ]
 );
-$router->add("/index/ajax", [
-    "controller" => "index",
-    "action"     => "ajax",
-]
+$router->add(
+    "/index/ajax",
+    [
+        "controller" => "index",
+        "action"     => "ajax",
+    ]
 );
-$router->add("/ajax", [
-    "controller" => "index",
-    "action"     => "ajax",
-]
+$router->add(
+    "/ajax",
+    [
+        "controller" => "index",
+        "action"     => "ajax",
+    ]
 );
 
 $router->handle();

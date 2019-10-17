@@ -61,7 +61,7 @@ class ControllerBase extends Controller
                 $actions[$action['level']][$action['room']] = $action;
             }
         }
-        $user['actions'] = $actions[$user['level']];
+        $user['actions'] = $actions[$user['level']] ?? [];
         
         return $user;
     }

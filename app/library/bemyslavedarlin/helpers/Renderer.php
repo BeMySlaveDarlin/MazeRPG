@@ -60,7 +60,8 @@ class Renderer extends Plugin
      */
     private function renderRooms($data)
     {
-        $html = '';
+        $hasActions = false;
+        $html = [];
         for ($row = 0; $row <= $this->fRow; $row++) {
             for ($col = 0; $col <= $this->fCol; $col++) {
                 $room = $row . $col;
@@ -70,7 +71,9 @@ class Renderer extends Plugin
                 $last = $this->getLastRoom($room);
                 $content = $character ?: $lastAction ?: $actions ?: $last ?: '';
                 
-                $html .= $this->renderDiv(
+                $hasActions = $hasActions ?: $actions;
+                $key = $character ? 'character' : $room;
+                $html[$key] = $this->renderDiv(
                     [
                         'class'     => 'card ',
                         'data-room' => $room,
@@ -79,21 +82,26 @@ class Renderer extends Plugin
                 );
             }
         }
+        if (!$hasActions) {
+            $html['character'] = $this->getCharacter($data, $data['room'], true);
+        }
         
-        return $html;
+        return implode('', $html);
     }
     
     /**
      * @param        $data
      * @param string $room
+     * @param null   $actions
      *
      * @return bool|string
      */
-    private function getCharacter($data, $room = '01')
+    private function getCharacter($data, $room = '01', bool $dead = false)
     {
         $character = $data['user_id'] % 2 == 0 ? '1' : ( $data['user_id'] % 3 == 0 ? '2' : '3' );
         $character = $data['health_value'] > 0 ? $character : 'dead';
-        $title = $data['health_value'] > 0 ? 'You current location' : 'You are dead. Reset the game.';
+        $character = $dead ? 'dead' : $character;
+        $title = $data['health_value'] > 0 && !$dead ? 'You current location' : 'You are dead. Reset the game.';
         $character = $this->renderDiv(
             [
                 'class' => 'action',
@@ -112,7 +120,7 @@ class Renderer extends Plugin
      *
      * @return string
      */
-    private function renderDiv(array $attributes = [], string $content = '')
+    private function renderDiv(array $attributes = [], string $content = null)
     {
         $selectors = [];
         foreach ($attributes as $attribute => $value) {

@@ -174,6 +174,14 @@ trait ControllerAjax
         $this->user->save();
     }
     
+    protected function calcUserPoints()
+    {
+        if ($this->user) {
+            $this->user->points--;
+            $this->user->save();
+        }
+    }
+    
     private function createZeroAction()
     {
         $_action = new Actions();
@@ -192,8 +200,7 @@ trait ControllerAjax
         $userData = $this->getFormattedUserData();
         if (!empty($userData['username'])) {
             $html = $this->renderer->render($userData, 'rooms');
-            $this->user->points--;
-            $this->user->save();
+            $this->calcUserPoints();
             
             $response = [
                 'status'  => 'success',

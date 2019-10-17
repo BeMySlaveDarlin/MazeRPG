@@ -3,24 +3,22 @@
 
     <div class="content">
         <div class="status-bar box-shadow">
-            <?
-            foreach ($data['status'] as $div) {
-                echo $div;
-            }
-            ?>
+            <?php foreach ($game->statuses as $status) {
+                echo $status;
+            } ?>
         </div>
         <div class="playboard box-shadow">
-            <?=$data['playboard']?>
+            <?php echo $game->playboard ?>
         </div>
         <div class="info-bar box-shadow">
             <div class="board-actions">
-                <? if (!empty($data['user']['username'])) { ?>
+                <?php if (!empty($game->user['username'])) { ?>
                     <div class="refresh-button" title="Refreshes current room">Refresh</div>
                     <div class="reset-button" title="Resets to level 1 room 0">New game</div>
-                <? } ?>
+                <?php } ?>
             </div>
             <div class="top-players">
-                <? if (!empty($data['top'])) { ?>
+                <?php if (!empty($game->players)) { ?>
                     <h2>TOP PLAYERS</h2>
                     <div class="player">
                         <div class="player-username">
@@ -36,23 +34,23 @@
                             &#9825;
                         </div>
                     </div>
-                    <? foreach ($data['top'] as $player) { ?>
+                    <?php foreach ($game->players as $player) { ?>
                         <div class="player">
                             <div class="player-username">
-                                <div class="marquee"><span><?=$player->username?></span></div>
+                                <div class="marquee"><span><?=$player['username']?></span></div>
                             </div>
                             <div class="player-points">
-                                <?=$player->points?>
+                                <?=$player['points']?>
                             </div>
                             <div class="player-bosses">
-                                <?=$player->level?>
+                                <?=$player['level']?>
                             </div>
                             <div class="player-bosses">
-                                <?=$player->health_value > 0 ? 'Alive' : 'Dead'?>
+                                <?=$player['health_value'] > 0 ? 'Alive' : 'Dead'?>
                             </div>
                         </div>
-                    <? } ?>
-                <? } ?>
+                    <?php } ?>
+                <?php } ?>
             </div>
         </div>
     </div>

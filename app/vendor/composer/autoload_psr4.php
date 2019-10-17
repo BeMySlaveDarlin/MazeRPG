@@ -5,6 +5,6 @@
 $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
-return array(
-    'Nubs\\RandomNameGenerator\\' => array($vendorDir . '/nubs/random-name-generator/src'),
-);
+return [
+    'Nubs\\RandomNameGenerator\\' => [$vendorDir . '/nubs/random-name-generator/src'],
+];

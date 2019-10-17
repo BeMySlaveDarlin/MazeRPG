@@ -1,11 +1,10 @@
 <div id="wrapper">
     <h1>Maze RPG Tactics</h1>
-    
+
     <div class="content">
         <div class="status-bar box-shadow">
             <?
-            foreach($data['status'] as $div)
-            {
+            foreach ($data['status'] as $div) {
                 echo $div;
             }
             ?>
@@ -15,13 +14,13 @@
         </div>
         <div class="info-bar box-shadow">
             <div class="board-actions">
-                <? if(!empty($data['user']['username'])){?>
+                <? if (!empty($data['user']['username'])) { ?>
                     <div class="refresh-button" title="Refreshes current room">Refresh</div>
                     <div class="reset-button" title="Resets to level 1 room 0">New game</div>
-                <?}?>
+                <? } ?>
             </div>
             <div class="top-players">
-                <? if(!empty($data['top'])){?>
+                <? if (!empty($data['top'])) { ?>
                     <h2>TOP PLAYERS</h2>
                     <div class="player">
                         <div class="player-username">
@@ -37,7 +36,7 @@
                             &#9825;
                         </div>
                     </div>
-                    <? foreach($data['top'] as $player){ ?>
+                    <? foreach ($data['top'] as $player) { ?>
                         <div class="player">
                             <div class="player-username">
                                 <div class="marquee"><span><?=$player->username?></span></div>
@@ -53,12 +52,13 @@
                             </div>
                         </div>
                     <? } ?>
-                <?}?>
+                <? } ?>
             </div>
         </div>
     </div>
     <div style="text-align:center">
         <p>Casual dungeon tactic runner based on Phalcon.</p>
-        <p>Oh my, the meaningful words, scenes and game itself! The perfect mixture of a drama and spiritual ending! Not to mention the great plot and characters! Truly, a masterpiece.</p>
+        <p>Oh my, the meaningful words, scenes and game itself! The perfect mixture of a drama and spiritual ending! Not
+            to mention the great plot and characters! Truly, a masterpiece.</p>
     </div>
 </div>

@@ -6,26 +6,27 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitf1309fbbd1aeb52292244bd141ffaa2b
 {
-    public static $prefixLengthsPsr4 = array (
-        'N' => 
-        array (
-            'Nubs\\RandomNameGenerator\\' => 25,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'Nubs\\RandomNameGenerator\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/nubs/random-name-generator/src',
-        ),
-    );
-
+    public static $prefixLengthsPsr4 = [
+        'N' =>
+            [
+                'Nubs\\RandomNameGenerator\\' => 25,
+            ],
+    ];
+    public static $prefixDirsPsr4 = [
+        'Nubs\\RandomNameGenerator\\' =>
+            [
+                0 => __DIR__ . '/..' . '/nubs/random-name-generator/src',
+            ],
+    ];
+    
     public static function getInitializer(ClassLoader $loader)
     {
-        return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf1309fbbd1aeb52292244bd141ffaa2b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf1309fbbd1aeb52292244bd141ffaa2b::$prefixDirsPsr4;
-
-        }, null, ClassLoader::class);
+        return \Closure::bind(
+            function () use ($loader)
+            {
+                $loader->prefixLengthsPsr4 = ComposerStaticInitf1309fbbd1aeb52292244bd141ffaa2b::$prefixLengthsPsr4;
+                $loader->prefixDirsPsr4 = ComposerStaticInitf1309fbbd1aeb52292244bd141ffaa2b::$prefixDirsPsr4;
+            }, null, ClassLoader::class
+        );
     }
 }

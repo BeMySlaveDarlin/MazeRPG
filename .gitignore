@@ -1,5 +1,7 @@
+app/composer.lock
 .idea/
 app/views/layouts/
+app/vendor/
 cache/
 public/files/
 public/temp/

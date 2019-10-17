@@ -1,4 +1,5 @@
 <?php
+
 namespace Nubs\RandomNameGenerator;
 
 /**
@@ -9,8 +10,8 @@ interface Generator
     /**
      * Gets a randomly generated name.
      *
-     * @api
      * @return string A random name.
+     * @api
      */
     public function getName();
 }

@@ -1,6 +1,8 @@
 <?php
 
-$loader = new \Phalcon\Loader();
+use Phalcon\Loader;
+
+$loader = new Loader();
 
 /**
  * We're a registering a set of directories taken from the configuration file
@@ -17,8 +19,8 @@ $loader->registerDirs(
 
 $loader->registerNamespaces(
     [
-        "Bemyslavedarlin\Helpers"  => $config->application->libraryDir."bemyslavedarlin/helpers",
-        "Bemyslavedarlin\Traits"  => $config->application->libraryDir."bemyslavedarlin/traits",
+        "Bemyslavedarlin\Helpers" => $config->application->libraryDir . "bemyslavedarlin/helpers",
+        "Bemyslavedarlin\Traits"  => $config->application->libraryDir . "bemyslavedarlin/traits",
     ]
 );
 

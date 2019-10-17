@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
@@ -17,64 +17,65 @@ class ActionsMigration_100 extends Migration
      */
     public function morph()
     {
-        $this->morphTable('actions', [
+        $this->morphTable(
+            'actions', [
                 'columns' => [
                     new Column(
                         'action_id',
                         [
-                            'type' => Column::TYPE_INTEGER,
-                            'notNull' => true,
+                            'type'          => Column::TYPE_INTEGER,
+                            'notNull'       => true,
                             'autoIncrement' => true,
-                            'size' => 11,
-                            'first' => true
+                            'size'          => 11,
+                            'first'         => true,
                         ]
                     ),
                     new Column(
                         'user_id',
                         [
-                            'type' => Column::TYPE_INTEGER,
+                            'type'    => Column::TYPE_INTEGER,
                             'notNull' => true,
-                            'size' => 11,
-                            'after' => 'action_id'
+                            'size'    => 11,
+                            'after'   => 'action_id',
                         ]
                     ),
                     new Column(
                         'level',
                         [
-                            'type' => Column::TYPE_INTEGER,
+                            'type'    => Column::TYPE_INTEGER,
                             'notNull' => true,
-                            'size' => 11,
-                            'after' => 'user_id'
+                            'size'    => 11,
+                            'after'   => 'user_id',
                         ]
                     ),
                     new Column(
                         'room',
                         [
-                            'type' => Column::TYPE_CHAR,
+                            'type'    => Column::TYPE_CHAR,
                             'notNull' => true,
-                            'size' => 2,
-                            'after' => 'level'
+                            'size'    => 2,
+                            'after'   => 'level',
                         ]
                     ),
                     new Column(
                         'status',
                         [
-                            'type' => Column::TYPE_CHAR,
+                            'type'    => Column::TYPE_CHAR,
                             'notNull' => true,
-                            'size' => 1,
-                            'after' => 'room'
+                            'size'    => 1,
+                            'after'   => 'room',
                         ]
                     ),
                     new Column(
                         'dttm',
                         [
-                            'type' => Column::TYPE_DATETIME,
+                            'type'    => Column::TYPE_DATETIME,
                             'default' => "CURRENT_TIMESTAMP",
                             'notNull' => true,
-                            'size' => 1,
-                            'after' => 'status'
+                            'size'    => 1,
+                            'after'   => 'status',
                         ]
-                    )
+                    ),
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['action_id'], 'PRIMARY'),
@@ -82,18 +83,18 @@ class ActionsMigration_100 extends Migration
                     new Index('level', ['level'], null),
                     new Index('room', ['room'], null),
                     new Index('status', ['status'], null),
-                    new Index('dttm', ['dttm'], null)
+                    new Index('dttm', ['dttm'], null),
                 ],
                 'options' => [
-                    'TABLE_TYPE' => 'BASE TABLE',
-                    'AUTO_INCREMENT' => '1',
-                    'ENGINE' => 'InnoDB',
-                    'TABLE_COLLATION' => 'utf8_general_ci'
+                    'TABLE_TYPE'      => 'BASE TABLE',
+                    'AUTO_INCREMENT'  => '1',
+                    'ENGINE'          => 'InnoDB',
+                    'TABLE_COLLATION' => 'utf8_general_ci',
                 ],
             ]
         );
     }
-
+    
     /**
      * Run the migrations
      *
@@ -101,9 +102,8 @@ class ActionsMigration_100 extends Migration
      */
     public function up()
     {
-
     }
-
+    
     /**
      * Reverse the migrations
      *
@@ -111,7 +111,5 @@ class ActionsMigration_100 extends Migration
      */
     public function down()
     {
-
     }
-
 }

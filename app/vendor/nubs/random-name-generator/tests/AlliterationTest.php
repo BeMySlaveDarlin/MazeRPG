@@ -1,8 +1,9 @@
 <?php
+
 namespace Nubs\RandomNameGenerator;
 
-use PHPUnit_Framework_TestCase;
 use Cinam\Randomizer\Randomizer;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @coversDefaultClass \Nubs\RandomNameGenerator\Alliteration
@@ -26,7 +27,7 @@ class AlliterationTest extends PHPUnit_Framework_TestCase
         $this->assertSame(2, count($parts));
         $this->assertSame($parts[0][0], $parts[1][0]);
     }
-
+    
     /**
      * Verify basic behavior of getName() with a forced random generator.
      *
@@ -41,11 +42,11 @@ class AlliterationTest extends PHPUnit_Framework_TestCase
         $numberGenerator = $this->createMock('\Cinam\Randomizer\NumberGenerator');
         $numberGenerator->expects($this->exactly(2))->method('getInt')->will($this->onConsecutiveCalls(20, 5));
         $randomizer = new Randomizer($numberGenerator);
-
+        
         $generator = new Alliteration($randomizer);
         $this->assertSame('Black Bear', $generator->getName());
     }
-
+    
     /**
      * Verify basic behavior of __toString().
      *

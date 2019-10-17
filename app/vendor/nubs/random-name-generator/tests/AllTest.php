@@ -1,8 +1,9 @@
 <?php
+
 namespace Nubs\RandomNameGenerator;
 
-use PHPUnit_Framework_TestCase;
 use Cinam\Randomizer\Randomizer;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @coversDefaultClass \Nubs\RandomNameGenerator\All
@@ -17,10 +18,10 @@ class AllTest extends PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::create
      * @covers ::getName
-     * @uses \Nubs\RandomNameGenerator\Alliteration
+     * @return void
      * @uses \Nubs\RandomNameGenerator\Vgng
      *
-     * @return void
+     * @uses \Nubs\RandomNameGenerator\Alliteration
      */
     public function getNameBasic()
     {
@@ -28,7 +29,7 @@ class AllTest extends PHPUnit_Framework_TestCase
         $name = $generator->getName();
         $this->assertRegexp('/.+/', $name);
     }
-
+    
     /**
      * Verify basic behavior of getName() with a forced random generator.
      *
@@ -36,20 +37,20 @@ class AllTest extends PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::create
      * @covers ::getName
+     * @return void
      * @uses \Nubs\RandomNameGenerator\Alliteration
      *
-     * @return void
      */
     public function getNameForced()
     {
         $numberGenerator = $this->createMock('\Cinam\Randomizer\NumberGenerator');
         $numberGenerator->expects($this->exactly(2))->method('getInt')->will($this->onConsecutiveCalls(20, 5));
         $randomizer = new Randomizer($numberGenerator);
-
+        
         $generator = new All([new Alliteration($randomizer)]);
         $this->assertSame('Black Bear', $generator->getName());
     }
-
+    
     /**
      * Verify basic behavior of __toString().
      *
@@ -58,10 +59,10 @@ class AllTest extends PHPUnit_Framework_TestCase
      * @covers ::create
      * @covers ::__toString
      * @covers ::getName
-     * @uses \Nubs\RandomNameGenerator\Alliteration
+     * @return void
      * @uses \Nubs\RandomNameGenerator\Vgng
      *
-     * @return void
+     * @uses \Nubs\RandomNameGenerator\Alliteration
      */
     public function toStringBasic()
     {

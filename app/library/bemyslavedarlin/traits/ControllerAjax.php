@@ -176,9 +176,11 @@ trait ControllerAjax
     
     protected function calcUserPoints()
     {
-        if ($this->user) {
-            $this->user->points--;
-            $this->user->save();
+        if ($this->user && !empty($this->user->username) && !empty($this->user->health_value)) {
+            if ($this->user->points > 0) {
+                $this->user->points--;
+                $this->user->save();
+            }
         }
     }
     

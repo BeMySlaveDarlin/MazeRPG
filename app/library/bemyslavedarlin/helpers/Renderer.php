@@ -4,6 +4,7 @@ namespace Bemyslavedarlin\Helpers;
 
 use Nubs\RandomNameGenerator\All as RNGenerator;
 use Phalcon\Mvc\User\Plugin;
+use Users;
 
 /**
  * Class Renderer
@@ -14,13 +15,18 @@ class Renderer extends Plugin
 {
     private $fRow      = 7;
     private $fCol      = 9;
-    private $generator = null;
+    private $generator;
+    private $user;
+    private $character = true;
     
     /**
      * Renderer constructor.
      */
     public function __construct()
     {
+        $session_id = $this->session->getId();
+        $this->user = Users::findFirst(['conditions' => "session_id = '" . $session_id . "'"]);
+        
         $this->generator = RNGenerator::create();
     }
     
@@ -61,6 +67,7 @@ class Renderer extends Plugin
     private function renderRooms($data)
     {
         $hasActions = false;
+        $charRoom = false;
         $html = [];
         for ($row = 0; $row <= $this->fRow; $row++) {
             for ($col = 0; $col <= $this->fCol; $col++) {
@@ -72,8 +79,10 @@ class Renderer extends Plugin
                 $content = $character ?: $lastAction ?: $actions ?: $last ?: '';
                 
                 $hasActions = $hasActions ?: $actions;
-                $key = $character ? 'character' : $room;
-                $html[$key] = $this->renderDiv(
+                if ($character) {
+                    $charRoom = $room;
+                }
+                $html[$room] = $this->renderDiv(
                     [
                         'class'     => 'card ',
                         'data-room' => $room,
@@ -82,8 +91,19 @@ class Renderer extends Plugin
                 );
             }
         }
+        
         if (!$hasActions) {
-            $html['character'] = $this->getCharacter($data, $data['room'], true);
+            $this->user->health_value = 0;
+            $this->user->update();
+            
+            $content = $this->getCharacter($data, $charRoom, true);
+            $html[$charRoom] = $this->renderDiv(
+                [
+                    'class'     => 'card ',
+                    'data-room' => $room,
+                ],
+                $content
+            );
         }
         
         return implode('', $html);
@@ -101,6 +121,9 @@ class Renderer extends Plugin
         $character = $data['user_id'] % 2 == 0 ? '1' : ( $data['user_id'] % 3 == 0 ? '2' : '3' );
         $character = $data['health_value'] > 0 ? $character : 'dead';
         $character = $dead ? 'dead' : $character;
+        if ($character === 'dead') {
+            $this->character = false;
+        }
         $title = $data['health_value'] > 0 && !$dead ? 'You current location' : 'You are dead. Reset the game.';
         $character = $this->renderDiv(
             [
@@ -142,11 +165,15 @@ class Renderer extends Plugin
      */
     private function getLastAction($actions, $room = '01')
     {
+        $monster = rand(1, 2);
+        $boss = rand(2, 3);
+        $level = $this->user->level;
+        
         $bonus = [
-            'item'    => '+1&#9825;',
-            'point'   => '+1&#9719;',
-            'monster' => '- 1 to X &#9825; | +1&#9719;',
-            'boss'    => '- 1 to X &#9825; | +2&#9719; | +1&#9876;',
+            'item'    => '+1 Health bonus',
+            'point'   => '+3 Points bonus',
+            'monster' => "+$monster Points bonus",
+            'boss'    => "+$boss  Points bonus | +1 Defence (acc 50-75%)",
         ];
         
         return !empty($actions[$room]) ?
@@ -258,17 +285,17 @@ class Renderer extends Plugin
     private function renderAction($direction = 'left')
     {
         $action = $this->getAction();
-        $title = $action == 'item' ? 'Health Potion +1&#9825;' : 'Progress Points +1&#9719;';
-        if (
-        in_array(
-            $action, [
+        $title = $action == 'item' ? '+1 Health bonus' : '+3 Points bonus';
+        
+        $isEnemy = in_array(
+            $action,
+            [
                 'monster',
                 'boss',
             ]
-        )
-        ) {
-            $title = $this->generator->getName();
-            $title .= $this->generator->getName() . ( $action == 'boss' ? ': +2&#9719;' : '+1&#9719;' );
+        );
+        if ($isEnemy) {
+            $title = $action == 'boss' ? '2 to 3 Points bonus' : '1 to 2 Points bonus';
         }
         
         return $this->renderDiv(
@@ -385,7 +412,7 @@ class Renderer extends Plugin
             [
                 'class' => 'attack-bar',
                 'id'    => 'attack',
-                'title' => 'Attack Power',
+                'title' => 'Defence Power',
             ],
             $data['attack_value']
         );

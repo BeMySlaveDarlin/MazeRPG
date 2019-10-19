@@ -176,7 +176,7 @@ trait ControllerAjax
     
     protected function calcUserPoints()
     {
-        if ($this->user && !empty($this->user->username) && !empty($this->user->health_value)) {
+        if ($this->user && !empty($this->user->username) && (int)$this->user->health_value > 0) {
             if ($this->user->points > 0) {
                 $this->user->points--;
                 $this->user->save();
@@ -256,21 +256,23 @@ trait ControllerAjax
     
     private function calcMonster()
     {
-        $monster = rand(2, 2);
-        $hpDiff = $this->user->level * $monster >= $this->user->attack_value ?
-            $this->user->level * $monster - $this->user->attack_value : 0;
+        $monster = rand(1, 2);
+        $hpDiff =
+            $this->user->level * $monster >= $this->user->attack_value ?
+                $this->user->level * $monster - $this->user->attack_value : 0;
         $this->user->health_value -= $hpDiff;
-        $this->user->points += 1;
+        $this->user->points += rand(1, $this->user->level);
     }
     
     private function calcBoss()
     {
-        $boss = rand(2, 4);
+        $boss = rand(2, 3);
         $hpDiff = $this->user->level * $boss >= $this->user->attack_value ?
             $this->user->level * $boss - $this->user->attack_value : 0;
+        
         $this->user->health_value -= $hpDiff;
-        $this->user->attack_value += floor(rand(1, 5) / 5);
+        $this->user->attack_value += rand(1 , 100) > (75 - $this->user->level / 10) ? 1 : 0;
         $this->user->boss_count += 1;
-        $this->user->points += 2;
+        $this->user->points += $boss;
     }
 }

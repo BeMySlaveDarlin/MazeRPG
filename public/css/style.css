@@ -56,12 +56,12 @@ h1{
 }
 
 .box-shadow{
-    -webkit-box-shadow: inset 0px 0px 5px 2px rgba(255,255,255,0.4);
-    -moz-box-shadow: inset 0px 0px 5px 2px rgba(255,255,255,0.4);
-    box-shadow: inset 0px 0px 5px 2px rgba(255,255,255,0.4);
-    border-radius: 4px 4px 4px 4px;
-    -moz-border-radius: 4px 4px 4px 4px;
-    -webkit-border-radius: 4px 4px 4px 4px;
+    -webkit-box-shadow: inset 0px 0px 2px 2px rgba(255,255,255,0.4);
+    -moz-box-shadow: inset 0px 0px 2px 2px rgba(255,255,255,0.4);
+    box-shadow: inset 0px 0px 2px 2px rgba(255,255,255,0.4);
+    border-radius: 2px 2px 2px 2px;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
     border: 0px solid #000000;
 }
 .info-bar{
@@ -195,7 +195,7 @@ h1{
 }
 .refresh-button {
     display: inline-block;
-    width: 48%;
+    width: 40%;
     border:1px solid transparent;
     border-radius: 4px;
     -moz-border-radius: 4px;
@@ -204,14 +204,14 @@ h1{
     line-height: 37px;
     font-size: 20px;
     font-weight: bold;
-    background: rgba(255,255,255,0.7);
+    background: rgba(0, 255, 39, 0.7);
     color: #000000;
     cursor: pointer;
     text-align: center;
 }
 .reset-button {
     display: inline-block;
-    width: 48%;
+    width: 40%;
     border:1px solid transparent;
     border-radius: 4px;
     -moz-border-radius: 4px;
@@ -221,6 +221,22 @@ h1{
     font-size: 20px;
     font-weight: bold;
     background: rgba(255, 0, 67, 0.7);
+    color: #000000;
+    cursor: pointer;
+    text-align: center;
+}
+.help-button {
+    display: inline-block;
+    width: 14%;
+    border:1px solid transparent;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    height: 37px;
+    line-height: 37px;
+    font-size: 20px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.7);
     color: #000000;
     cursor: pointer;
     text-align: center;
@@ -314,6 +330,21 @@ h1{
     background: url('/img/interface/treasure.png') center center no-repeat;
     background-size: contain;
 }
+#help-modal .card
+{
+    width: 32px;
+    height: 32px;
+}
+#help-modal .card .action
+{
+    width: 30px;
+    height: 30px;
+}
+#help-modal .card .action div
+{
+    -webkit-background-size: cover;
+    background-size: cover;
+}
 
 @-webkit-keyframes scroll {
     0% {
@@ -359,4 +390,19 @@ h1{
     -webkit-animation: scroll 10s infinite linear;
     -moz-animation: scroll 10s infinite linear;
     animation: scroll 10s infinite linear;
+}
+
+.ui-dialog,
+.ui-dialog-titlebar,
+.ui-dialog-buttonpane,
+#help-modal
+{
+    font-size: 20px;
+    background: rgba(0, 0, 0, 1);
+    border: 1px solid #cbcbcb;
+    color: #cbcbcb;
+}
+.ui-dialog-buttonpane
+{
+    font-size: 13px;
 }

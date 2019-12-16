@@ -5,8 +5,8 @@ ini_set('display_startup_errors', 1);
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
-include APP_PATH . '/config/functions.php';
 include BASE_PATH . '/vendor/autoload.php';
+include APP_PATH . '/config/functions.php';
 
 try {
 

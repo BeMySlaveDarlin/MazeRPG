@@ -50,6 +50,8 @@ services:
     restart: always
     env_file:
       - .env
+    ports:
+      - 3306:3306
     volumes:
       - mysql_data:/var/lib/mysql/
       - ./build/mysql/config:/etc/mysql/conf.d/

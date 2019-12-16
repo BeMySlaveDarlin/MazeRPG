@@ -73,24 +73,27 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     && sed -i -e "/listen = .*/c\listen = [::]:8000" ${FPM_CONF_PATH}
 
 RUN pecl update-channels \
-    && pecl -d php_suffix=$PHP_VERSION install -o -f redis memcached imagick swoole ds \
+    && pecl -d php_suffix=$PHP_VERSION install -o -f redis memcached imagick \
     && echo "extension=redis.so" > /etc/php/$PHP_VERSION/mods-available/redis.ini \
     && echo "extension=memcached.so" > /etc/php/$PHP_VERSION/mods-available/memcached.ini \
     && echo "extension=imagick.so" > /etc/php/$PHP_VERSION/mods-available/imagick.ini \
-    && echo "extension=swoole.so" > /etc/php/$PHP_VERSION/mods-available/swoole.ini \
-    && echo "extension=ds.so" > /etc/php/$PHP_VERSION/mods-available/ds.ini \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/redis.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-redis.ini \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/redis.ini /etc/php/$PHP_VERSION/cli/conf.d/20-redis.ini \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/memcached.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-memcached.ini \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/memcached.ini /etc/php/$PHP_VERSION/cli/conf.d/20-memcached.ini \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/imagick.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-imagick.ini \
-    && ln -sf /etc/php/$PHP_VERSION/mods-available/imagick.ini /etc/php/$PHP_VERSION/cli/conf.d/20-imagick.ini \
-    && ln -sf /etc/php/$PHP_VERSION/mods-available/swoole.ini /etc/php/$PHP_VERSION/fpm/conf.d/50-swoole.ini \
-    && ln -sf /etc/php/$PHP_VERSION/mods-available/swoole.ini /etc/php/$PHP_VERSION/cli/conf.d/50-swoole.ini \
-    && ln -sf /etc/php/$PHP_VERSION/mods-available/ds.ini /etc/php/$PHP_VERSION/fpm/conf.d/50-ds.ini \
-    && ln -sf /etc/php/$PHP_VERSION/mods-available/ds.ini /etc/php/$PHP_VERSION/cli/conf.d/50-ds.ini
+    && ln -sf /etc/php/$PHP_VERSION/mods-available/imagick.ini /etc/php/$PHP_VERSION/cli/conf.d/20-imagick.ini
 
 COPY ./src/backend /app
+
+VOLUME /app/vendor \
+       /app/repository
+
+RUN mkdir -p /app \
+    && rm -rf /tmp/* /var/tmp/* \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y
 
 WORKDIR /app
 
@@ -104,17 +107,6 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
     && composer global require hirak/prestissimo \
     && composer install --no-scripts --no-autoloader \
     && composer dump-autoload --optimize
-
-RUN mkdir -p /app \
-    && rm -rf /tmp/* /var/tmp/* \
-    && apt-get autoremove -y \
-    && apt-get autoclean -y \
-    && apt-get clean -y
-
-RUN chmod +x bin/console
-
-VOLUME /app/vendor \
-       /app/repository
 
 CMD ["php-fpm7.3", "--nodaemonize", "--fpm-config=/etc/php/7.3/fpm/pool.d/www.conf"]
 

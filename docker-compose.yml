@@ -1,0 +1,60 @@
+version: "3.6"
+services:
+  nginx-proxy:
+    build:
+      context: ./
+      dockerfile: ./build/nginx/Dockerfile
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./src/backend/:/app
+      - ./build/nginx/conf.d:/etc/nginx/conf.d
+      - ./build/nginx/fastcgi.conf:/etc/nginx/fastcgi.conf
+      - ./build/nginx/fastcgi-php.conf:/etc/nginx/fastcgi-php.conf
+      - ./build/nginx/default.conf.template:/etc/nginx/default.conf.template
+      - vendor:/app/vendor
+      - repository:/app/repository
+    ports:
+      - ${NGINX_PROXY_SERVICE_PORT}
+      - ${NGINX_PROXY_SERVICE_SECURE_PORT}
+    depends_on:
+      - php-fpm
+    command: >
+      /bin/sh -c
+      "envsubst '
+      $${APP_HOST_NAME}
+      '< /etc/nginx/default.conf.template
+      > /etc/nginx/conf.d/default.conf
+      && nginx -g 'daemon off;'"
+
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: ./build/php-fpm/Dockerfile
+    working_dir: /app
+    restart: always
+    env_file:
+      - ./src/backend/.env
+    volumes:
+      - ./src/backend/:/app
+      - vendor:/app/vendor
+      - repository:/app/repository
+    ports:
+      - ${APP_SERVICE_PORT}
+    depends_on:
+      - db-mysql
+
+  db-mysql:
+    image: mysql:5.7.28
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - mysql_data:/var/lib/mysql/
+      - ./build/mysql/config:/etc/mysql/conf.d/
+
+volumes:
+  vendor:
+  repository:
+  mysql_data:

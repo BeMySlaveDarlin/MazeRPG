@@ -1,0 +1,148 @@
+<div id="wrapper">
+    <h1>Maze RPG Tactics</h1>
+
+    <div class="content">
+        <div class="status-bar box-shadow">
+            <?php foreach ($game->statuses as $status) {
+                echo $status;
+            } ?>
+        </div>
+        <div class="playboard box-shadow">
+            <?php echo $game->playboard ?>
+        </div>
+        <div class="info-bar box-shadow">
+            <div class="board-actions">
+                <?php if (!empty($game->user['username'])) { ?>
+                    <div class="refresh-button" title="Refreshes current room">Refresh</div>
+                    <div class="reset-button" title="Resets to level 1 room 0">New game</div>
+                    <div class="help-button" title="Read rules and help">?</div>
+                <?php } ?>
+            </div>
+            <div class="top-players">
+                <?php if (!empty($game->players)) { ?>
+                    <h2>TOP PLAYERS</h2>
+                    <div class="player">
+                        <div class="player-username">
+                            IGN
+                        </div>
+                        <div class="player-points">
+                            POINTS
+                        </div>
+                        <div class="player-bosses">
+                            LVL
+                        </div>
+                        <div class="player-bosses">
+                            &#9825;
+                        </div>
+                    </div>
+                    <?php foreach ($game->players as $player) { ?>
+                        <div class="player">
+                            <div class="player-username">
+                                <div class="marquee"><span><?=$player['username']?></span></div>
+                            </div>
+                            <div class="player-points">
+                                <?=$player['points']?>
+                            </div>
+                            <div class="player-bosses">
+                                <?=$player['level']?>
+                            </div>
+                            <div class="player-bosses">
+                                <?=$player['health_value'] > 0 ? 'Alive' : 'Dead'?>
+                            </div>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <div style="text-align:center">
+        <p>Casual dungeon tactic runner based on Phalcon.</p>
+        <p>Oh my, the meaningful words, scenes and game itself! The perfect mixture of a drama and spiritual ending! Not
+            to mention the great plot and characters! Truly, a masterpiece.</p>
+    </div>
+    <div id="help-modal" title="Help">
+        <dl>
+            <dt>
+                <span class="ui-icon ui-icon-info"></span>
+                The goal is to get up to 255 level with maximum points.
+            </dt>
+            <dt>
+                <span class="ui-icon ui-icon-info"></span>
+                Use your mouse to click on playboard.
+            </dt>
+            <dt>
+                <span class="ui-icon ui-icon-info"></span>
+                Playboard is 8x10 size.
+            </dt>
+            <dt>
+                <span class="ui-icon ui-icon-info"></span>
+                Every page refresh consumes Points
+            </dt>
+            <dt>
+                <span class="ui-icon ui-icon-info"></span>
+                There are 4 types of cells on playboard:
+                <dl>
+                    <dt style="margin-top:4px">
+                        <div class="card " data-room="01">
+                            <div class="action" title="" aria-describedby="ui-id-8">
+                                <div class="action-done action-item"></div>
+                            </div>
+                        </div>
+                    </dt>
+                    <dd>
+                        <span style="line-height: 35px;">Gives +1 HP</span>
+                    </dd>
+                    <dt style="clear: both;"></dt>
+                    <dt style="margin-top:4px">
+                        <div class="card" data-room="01">
+                            <div class="action" title="" aria-describedby="ui-id-8">
+                                <div class="action-done action-point"></div>
+                            </div>
+                        </div>
+                    </dt>
+                    <dd>
+                        <span style="line-height: 35px;">Gives +3 Points</span>
+                    </dd>
+                    <dt style="clear: both;"></dt>
+                    <dt style="margin-top:4px">
+                        <div class="card " data-room="01">
+                            <div class="action" title="" aria-describedby="ui-id-8">
+                                <div class="action-done action-monster"></div>
+                            </div>
+                        </div>
+                    </dt>
+                    <dd>
+                        <ul style="list-style: none;margin:0;padding: 0;">
+                            <li>Gives +1/+2 Points</li>
+                            <li>Cuts a bit HP</li>
+                        </ul>
+                    </dd>
+                    <dt style="clear: both;"></dt>
+                    <dt style="margin-top:4px">
+                        <div class="card " data-room="01">
+                            <div class="action" title="" aria-describedby="ui-id-8">
+                                <div class="action-done action-boss"></div>
+                            </div>
+                        </div>
+                    </dt>
+                    <dd>
+                        <ul style="list-style: none;margin:0;padding: 0;">
+                            <li>Gives +2/+3 Points</li>
+                            <li>Cuts a lot of HP</li>
+                            <li>Can give randomly 1 Defense with chance 50-75%</li>
+                        </ul>
+                    </dd>
+                    <dt style="clear: both;"></dt>
+                </dl>
+            </dt>
+            <dt>
+                <span class="ui-icon ui-icon-info"></span>
+                All found bonuses is permanent
+            </dt>
+            <dt>
+                <span class="ui-icon ui-icon-info"></span>
+                Defence value ignores incoming damage. So raise it. Dragon Boss can give Defence with a chance of 50-75%
+            </dt>
+        </dl>
+    </div>
+</div>

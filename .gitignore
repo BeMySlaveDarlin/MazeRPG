@@ -1,8 +1,7 @@
-app/composer.lock
-.idea/
-app/views/layouts/
-app/vendor/
-app/vendor/*
-cache/
-public/files/
-public/temp/
+# Ignore IDE workflow
+.idea
+.phalcon
+
+# Sensitive files and folders
+.env
+.env.testing

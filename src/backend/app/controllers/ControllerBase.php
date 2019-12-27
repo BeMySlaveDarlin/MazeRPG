@@ -1,6 +1,10 @@
 <?php
 
-use Bemyslavedarlin\Helpers\Renderer;
+namespace maze\controllers;
+
+use maze\library\bemyslavedarlin\helpers\Renderer;
+use maze\models\Actions;
+use maze\models\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
 
@@ -9,9 +13,9 @@ use Phalcon\Mvc\Dispatcher;
  */
 class ControllerBase extends Controller
 {
-    protected $user     = null;
-    protected $renderer = null;
-    
+    protected $user;
+    protected $renderer;
+
     /**
      * @param Dispatcher $dispatcher
      */
@@ -20,7 +24,7 @@ class ControllerBase extends Controller
         $this->renderer = new Renderer();
         $this->getUser();
     }
-    
+
     /**
      * @return mixed
      */
@@ -35,34 +39,34 @@ class ControllerBase extends Controller
             $this->user->points = 1;
             $this->user->room = '00';
             $this->user->save();
-            
+
             $_action = new Actions();
             $_action->user_id = $this->user->user_id;
             $_action->level = 1;
             $_action->room = '00';
             $_action->status = 'point';
             $_action->save();
-            
+
             $this->session->set('user_id', $this->user->user_id);
-            
+
             return $this->response->redirect('/', true)->sendHeaders();
         }
     }
-    
+
     /**
      * @return array
      */
     protected function getFormattedUserData()
     {
-        $user = $this->user->toArray();
         $actions = [];
-        if (!empty($this->user->actions)) {
-            foreach ($this->user->actions->toArray() as $action) {
+        if (!empty($_actions = Actions::find(['conditions' => 'user_id = ' . $this->user->user_id]))) {
+            foreach ($_actions->toArray() as $action) {
                 $actions[$action['level']][$action['room']] = $action;
             }
         }
+        $user = $this->user->toArray();
         $user['actions'] = $actions[$user['level']] ?? [];
-        
+
         return $user;
     }
 }

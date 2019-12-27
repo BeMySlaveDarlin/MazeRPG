@@ -1,5 +1,7 @@
 <?php
 
+namespace maze\models;
+
 use Phalcon\Mvc\Model;
 
 /**
@@ -45,45 +47,21 @@ class Actions extends Model
      * @Column(column="dttm", type="string", nullable=false)
      */
     public $dttm;
-    
-    /**
-     * Allows to query a set of records that match the specified conditions
-     *
-     * @param mixed $parameters
-     *
-     * @return Actions[]|Actions|\Phalcon\Mvc\Model\ResultSetInterface
-     */
-    public static function find($parameters = null)
-    {
-        return parent::find($parameters);
-    }
-    
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     *
-     * @return Actions|\Phalcon\Mvc\Model\ResultInterface
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
-    
+
     /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->setSchema("maze");
-        $this->setSource("actions");
+        $this->setSchema('maze');
+        $this->setSource('actions');
         $this->hasOne(
             'user_id',
-            'Users',
+            Users::class,
             'user_id'
         );
     }
-    
+
     /**
      * Returns table name mapped in the model.
      *

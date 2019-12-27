@@ -1,33 +1,34 @@
 <?php
 
-namespace Bemyslavedarlin\Traits;
+namespace maze\library\bemyslavedarlin\traits;
 
-use Actions;
-use Users;
+use maze\models\Actions;
+use maze\models\Users;
+use Phalcon\Http\Response;
+use Phalcon\Http\ResponseInterface;
 
 /**
  * Trait ControllerAjax
- *
- * @package Bemyslavedarlin\Traits
+ * @package maze\library\bemyslavedarlin\traits
  */
 trait ControllerAjax
 {
     /**
-     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     * @return Response|ResponseInterface
      */
     private function noAjaxResult()
     {
         $response = [
-            'status'  => 'error',
+            'status' => 'error',
             'message' => 'Empty ajax result',
         ];
         $this->response->setJsonContent($response);
-        
+
         return $this->response;
     }
-    
+
     /**
-     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     * @return Response|ResponseInterface
      */
     private function setUsername()
     {
@@ -36,7 +37,7 @@ trait ControllerAjax
             $user = Users::findFirst(['username' => $username])->toArray();
             if (empty($user['user_id'])) {
                 $response = [
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => 'Username already in use',
                 ];
             } else {
@@ -45,30 +46,30 @@ trait ControllerAjax
                     $userData = $this->getFormattedUserData();
                     $html = $this->renderer->render($userData, 'rooms');
                     $response = [
-                        'status'  => 'success',
+                        'status' => 'success',
                         'message' => 'Username successfully set',
-                        'board'   => $html,
-                        'user'    => $this->user,
+                        'board' => $html,
+                        'user' => $this->user,
                     ];
                 } else {
                     $response = [
-                        'status'  => 'error',
+                        'status' => 'error',
                         'message' => 'Cannot save Username',
                     ];
                 }
             }
         } else {
             $response = [
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'Empty username',
             ];
         }
-        
+
         $this->response->setJsonContent($response);
-        
+
         return $this->response;
     }
-    
+
     /**
      * @return mixed
      */
@@ -86,10 +87,10 @@ trait ControllerAjax
             'top',
             'bottom',
         ];
-        
+
         $action = $this->request->get('action');
         $direction = $this->request->get('direction');
-        
+
         if (
             in_array($direction, $directions)
             && in_array($action, $actions)
@@ -101,36 +102,36 @@ trait ControllerAjax
             $_action->level = $this->user->level;
             $_action->room = $room;
             $_action->status = $action;
-            
+
             if ($_action->save()) {
                 $this->calcStats($action, $room);
                 $userData = $this->getFormattedUserData();
                 $html = $this->renderer->render($userData, 'rooms');
-                
+
                 $response = [
-                    'status'  => 'success',
+                    'status' => 'success',
                     'message' => 'Action successfully done',
-                    'board'   => $html,
-                    'user'    => $this->user,
+                    'board' => $html,
+                    'user' => $this->user,
                 ];
             } else {
                 $response = [
-                    'status'  => 'error',
+                    'status' => 'error',
                     'message' => "Can't do action",
                 ];
             }
         } else {
             $response = [
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'Wrong action or direction',
             ];
         }
-        
+
         $this->response->setJsonContent($response);
-        
+
         return $this->response;
     }
-    
+
     /**
      * @param $direction
      *
@@ -146,11 +147,11 @@ trait ControllerAjax
                 $direction == 'top' ? $room - 10 : $room + 10
                 )
             );
-        $room = sprintf("%02d", $room);
-        
+        $room = sprintf('%02d', $room);
+
         return $room;
     }
-    
+
     /**
      * @param $action
      *
@@ -162,7 +163,7 @@ trait ControllerAjax
         if (method_exists($this, $method)) {
             self::$method();
         }
-        
+
         if ($room == '79') {
             $this->user->level += 1;
             $this->user->room = '00';
@@ -170,10 +171,10 @@ trait ControllerAjax
         } else {
             $this->user->room = $room;
         }
-        
+
         $this->user->save();
     }
-    
+
     protected function calcUserPoints()
     {
         if ($this->user && !empty($this->user->username) && (int)$this->user->health_value > 0) {
@@ -183,7 +184,7 @@ trait ControllerAjax
             }
         }
     }
-    
+
     private function createZeroAction()
     {
         $_action = new Actions();
@@ -193,7 +194,7 @@ trait ControllerAjax
         $_action->status = 'point';
         $_action->save();
     }
-    
+
     /**
      * @return mixed
      */
@@ -203,25 +204,25 @@ trait ControllerAjax
         if (!empty($userData['username'])) {
             $html = $this->renderer->render($userData, 'rooms');
             $this->calcUserPoints();
-            
+
             $response = [
-                'status'  => 'success',
+                'status' => 'success',
                 'message' => 'Action successfully done',
-                'board'   => $html,
-                'user'    => $this->user,
+                'board' => $html,
+                'user' => $this->user,
             ];
         } else {
             $response = [
-                'status'  => 'error',
+                'status' => 'error',
                 'message' => 'Empty ajax result',
             ];
         }
-        
+
         $this->response->setJsonContent($response);
-        
+
         return $this->response;
     }
-    
+
     /**
      * @return mixed
      */
@@ -233,27 +234,30 @@ trait ControllerAjax
             $action->delete();
         }
         $user->delete();
-        
+
         $this->response->setJsonContent(
             [
-                'status'  => 'success',
+                'status' => 'success',
                 'message' => 'Game reseted',
             ]
         );
-        
+
         return $this->response;
     }
-    
+
     private function calcItem()
     {
         $this->user->health_value += 1;
     }
-    
+
     private function calcPoint()
     {
         $this->user->points += 3;
     }
-    
+
+    /**
+     * @throws \Exception
+     */
     private function calcMonster()
     {
         $monster = rand(1, 2);
@@ -263,15 +267,18 @@ trait ControllerAjax
         $this->user->health_value -= $hpDiff;
         $this->user->points += rand(1, $this->user->level);
     }
-    
+
+    /**
+     * @throws \Exception
+     */
     private function calcBoss()
     {
         $boss = rand(2, 3);
         $hpDiff = $this->user->level * $boss >= $this->user->attack_value ?
             $this->user->level * $boss - $this->user->attack_value : 0;
-        
+
         $this->user->health_value -= $hpDiff;
-        $this->user->attack_value += rand(1 , 100) > (75 - $this->user->level / 10) ? 1 : 0;
+        $this->user->attack_value += rand(1, 100) > (75 - $this->user->level / 10) ? 1 : 0;
         $this->user->boss_count += 1;
         $this->user->points += $boss;
     }

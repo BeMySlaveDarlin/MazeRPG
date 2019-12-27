@@ -27,22 +27,11 @@ try {
     include APP_PATH . '/config/services.php';
 
     /**
-     * Get config service for use in inline setup below
-     */
-    $config = $di->getConfig();
-
-    /**
-     * Include Autoloader
-     */
-    include APP_PATH . '/config/loader.php';
-
-    /**
      * Handle the request
      */
     $application = new \Phalcon\Mvc\Application($di);
 
     echo $application->handle()->getContent();
-
 } catch (\Exception $e) {
     echo $e->getMessage() . '<br>';
     echo '<pre>' . $e->getTraceAsString() . '</pre>';

@@ -1,9 +1,14 @@
 {
-  "name": "BeMySlaveDarlin/MazeRPG",
+  "name": "bemyslavedarlin/maze-rpg",
   "description": "Maze RPG Tactics",
   "type": "project",
   "require": {
     "nubs/random-name-generator": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "maze\\": "app/"
+    }
   },
   "license": "MIT",
   "authors": [
@@ -11,6 +16,5 @@
       "name": "BeMySlaveDarlin",
       "email": "bemyslavedarlin@gmail.com"
     }
-  ],
-  "minimum-stability": "alpha"
+  ]
 }

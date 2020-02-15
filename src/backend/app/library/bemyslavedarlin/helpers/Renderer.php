@@ -1,24 +1,24 @@
 <?php
 
-namespace Bemyslavedarlin\Helpers;
+namespace maze\library\bemyslavedarlin\helpers;
 
+use maze\models\Actions;
+use maze\models\Users;
 use Nubs\RandomNameGenerator\All as RNGenerator;
 use Phalcon\Mvc\User\Plugin;
-use Users;
 
 /**
  * Class Renderer
- *
- * @package Bemyslavedarlin\Helpers
+ * @package maze\library\bemyslavedarlin\helpers
  */
 class Renderer extends Plugin
 {
-    private $fRow      = 7;
-    private $fCol      = 9;
+    private $fRow = 7;
+    private $fCol = 9;
     private $generator;
     private $user;
     private $character = true;
-    
+
     /**
      * Renderer constructor.
      */
@@ -26,12 +26,12 @@ class Renderer extends Plugin
     {
         $session_id = $this->session->getId();
         $this->user = Users::findFirst(['conditions' => "session_id = '" . $session_id . "'"]);
-        
+
         $this->generator = RNGenerator::create();
     }
-    
+
     /**
-     * @param array  $data
+     * @param array $data
      * @param string $type
      *
      * @return bool
@@ -39,10 +39,10 @@ class Renderer extends Plugin
     public function render(array $data = [], string $type = 'status')
     {
         $method = 'render' . ucfirst($type);
-        
+
         return method_exists($this, $method) ? self::$method($data) : false;
     }
-    
+
     /**
      * @param $data
      *
@@ -55,10 +55,10 @@ class Renderer extends Plugin
         } else {
             $html = $this->renderAuthForm();
         }
-        
+
         return $html;
     }
-    
+
     /**
      * @param $data
      *
@@ -77,51 +77,51 @@ class Renderer extends Plugin
                 $actions = $this->getRooms($data, $row, $col);
                 $last = $this->getLastRoom($room);
                 $content = $character ?: $lastAction ?: $actions ?: $last ?: '';
-                
+
                 $hasActions = $hasActions ?: $actions;
                 if ($character) {
                     $charRoom = $room;
                 }
                 $html[$room] = $this->renderDiv(
                     [
-                        'class'     => 'card ',
+                        'class' => 'card ',
                         'data-room' => $room,
                     ],
                     $content
                 );
             }
         }
-        
+
         if (!$hasActions) {
             $this->user->health_value = 0;
             $this->user->update();
-            
+
             $content = $this->getCharacter($data, $charRoom, true);
             $html[$charRoom] = $this->renderDiv(
                 [
-                    'class'     => 'card ',
+                    'class' => 'card ',
                     'data-room' => $room,
                 ],
                 $content
             );
         }
-        
+
         return implode('', $html);
     }
-    
+
     /**
      * @param        $data
      * @param string $room
-     * @param null   $actions
+     * @param bool $dead
      *
      * @return bool|string
      */
     private function getCharacter($data, $room = '01', bool $dead = false)
     {
-        $character = $data['user_id'] % 2 == 0 ? '1' : ( $data['user_id'] % 3 == 0 ? '2' : '3' );
+        $character = $data['user_id'] % 2 == 0 ? '1' : ($data['user_id'] % 3 == 0 ? '2' : '3');
         $character = $data['health_value'] > 0 ? $character : 'dead';
         $character = $dead ? 'dead' : $character;
-        if ($character === 'dead') {
+        if ($character == 'dead') {
             $this->character = false;
         }
         $title = $data['health_value'] > 0 && !$dead ? 'You current location' : 'You are dead. Reset the game.';
@@ -132,13 +132,13 @@ class Renderer extends Plugin
             ],
             '<img height="100%"  src="/img/characters/' . $character . '.gif" />'
         );
-        
+
         return $room == $data['room'] ?
             $character : false;
     }
-    
+
     /**
-     * @param array  $attributes
+     * @param array $attributes
      * @param string $content
      *
      * @return string
@@ -149,33 +149,34 @@ class Renderer extends Plugin
         foreach ($attributes as $attribute => $value) {
             $selectors[] = $attribute . '="' . $value . '"';
         }
-        
-        $div = '<div ' . implode(" ", $selectors) . '>';
+
+        $div = '<div ' . implode(' ', $selectors) . '>';
         $div .= $content;
         $div .= '</div>';
-        
+
         return $div;
     }
-    
+
     /**
-     * @param        $actions
+     * @param $actions
      * @param string $room
      *
      * @return bool|string
+     * @throws \Exception
      */
     private function getLastAction($actions, $room = '01')
     {
         $monster = rand(1, 2);
         $boss = rand(2, 3);
         $level = $this->user->level;
-        
+
         $bonus = [
-            'item'    => '+1 Health bonus',
-            'point'   => '+3 Points bonus',
+            'item' => '+1 Health bonus',
+            'point' => '+3 Points bonus',
             'monster' => "+$monster Points bonus",
-            'boss'    => "+$boss  Points bonus | +1 Defence (acc 50-75%)",
+            'boss' => "+$boss  Points bonus | +1 Defence (acc 50-75%)",
         ];
-        
+
         return !empty($actions[$room]) ?
             $this->renderDiv(
                 [
@@ -188,7 +189,7 @@ class Renderer extends Plugin
                 )
             ) : false;
     }
-    
+
     /**
      * @param $data
      * @param $row
@@ -201,19 +202,19 @@ class Renderer extends Plugin
         $room = $row . $col;
         if (empty($data['actions'][$room]) && $data['health_value'] > 0) {
             $rooms = [
-                $this->getLeftRoom($data)         => 'left',
-                $this->getRightRoom($data)        => 'right',
-                $this->getTopRoom($data, $row)    => 'top',
+                $this->getLeftRoom($data) => 'left',
+                $this->getRightRoom($data) => 'right',
+                $this->getTopRoom($data, $row) => 'top',
                 $this->getBottomRoom($data, $row) => 'bottom',
             ];
-            
-            return !empty($rooms[$room]) && ( $row <= 7 && $col <= 9 ) ?
+
+            return !empty($rooms[$room]) && ($row <= 7 && $col <= 9) ?
                 $this->renderAction($rooms[$room]) : false;
         }
-        
+
         return false;
     }
-    
+
     /**
      * @param $data
      *
@@ -222,10 +223,10 @@ class Renderer extends Plugin
     private function getLeftRoom($data)
     {
         $row = $data['room'][0];
-        
+
         return $this->getRoom($data['room'] - 1, $row);
     }
-    
+
     /**
      * @param string $possible
      * @param        $row
@@ -235,14 +236,14 @@ class Renderer extends Plugin
     private function getRoom($possible = '00', $row)
     {
         $rowStart = $row * 10;
-        $rowEnd = ( $row * 10 ) + 9;
-        
+        $rowEnd = ($row * 10) + 9;
+
         return (
             $possible >= $rowStart
             && $possible <= $rowEnd
         ) ? sprintf("%02d", $possible) : null;
     }
-    
+
     /**
      * @param $data
      *
@@ -251,10 +252,10 @@ class Renderer extends Plugin
     private function getRightRoom($data)
     {
         $row = $data['room'][0];
-        
+
         return $this->getRoom($data['room'] + 1, $row);
     }
-    
+
     /**
      * @param $data
      * @param $row
@@ -265,7 +266,7 @@ class Renderer extends Plugin
     {
         return $this->getRoom($data['room'] - 10, $row);
     }
-    
+
     /**
      * @param $data
      * @param $row
@@ -276,7 +277,7 @@ class Renderer extends Plugin
     {
         return $this->getRoom($data['room'] + 10, $row);
     }
-    
+
     /**
      * @param string $direction
      *
@@ -286,7 +287,7 @@ class Renderer extends Plugin
     {
         $action = $this->getAction();
         $title = $action == 'item' ? '+1 Health bonus' : '+3 Points bonus';
-        
+
         $isEnemy = in_array(
             $action,
             [
@@ -297,32 +298,32 @@ class Renderer extends Plugin
         if ($isEnemy) {
             $title = $action == 'boss' ? '2 to 3 Points bonus' : '1 to 2 Points bonus';
         }
-        
+
         return $this->renderDiv(
             ['class' => 'action'],
             $this->renderDiv(
                 [
-                    'class'     => 'action-active action-' . $action,
-                    'title'     => $title,
-                    'action'    => $action,
+                    'class' => 'action-active action-' . $action,
+                    'title' => $title,
+                    'action' => $action,
                     'direction' => $direction,
                 ], ''
             )
         );
     }
-    
+
     /**
      * @return mixed
      */
     private function getAction()
     {
         $actions = [
-            'item'    => '60',
+            'item' => '60',
             'monster' => '60',
-            'point'   => '15',
-            'boss'    => '15',
+            'point' => '15',
+            'boss' => '15',
         ];
-        
+
         $newActions = [];
         foreach ($actions as $action => $value) {
             $newActions = array_merge(
@@ -334,10 +335,10 @@ class Renderer extends Plugin
                 )
             );
         }
-        
+
         return $newActions[array_rand($newActions)];
     }
-    
+
     /**
      * @param string $room
      *
@@ -356,7 +357,7 @@ class Renderer extends Plugin
             )
         ) : false;
     }
-    
+
     /**
      * @return string
      */
@@ -376,7 +377,7 @@ class Renderer extends Plugin
             )
         );
     }
-    
+
     /**
      * @param $data
      *
@@ -387,7 +388,7 @@ class Renderer extends Plugin
         $html['username'] = $this->renderDiv(
             [
                 'class' => 'text-bar right-border',
-                'id'    => 'username',
+                'id' => 'username',
                 'title' => 'Username',
             ],
             !empty($data['username']) ? $data['username'] : '- NONAME -'
@@ -395,15 +396,15 @@ class Renderer extends Plugin
         $html['level'] = $this->renderDiv(
             [
                 'class' => 'text-bar',
-                'id'    => 'level',
+                'id' => 'level',
                 'title' => 'Level',
             ],
-            "LVL: " . $data['level']
+            'LVL: ' . $data['level']
         );
         $html['health'] = $this->renderDiv(
             [
                 'class' => 'health-bar',
-                'id'    => 'health',
+                'id' => 'health',
                 'title' => 'Health Points',
             ],
             $data['health_value']
@@ -411,7 +412,7 @@ class Renderer extends Plugin
         $html['attack'] = $this->renderDiv(
             [
                 'class' => 'attack-bar',
-                'id'    => 'attack',
+                'id' => 'attack',
                 'title' => 'Defence Power',
             ],
             $data['attack_value']
@@ -419,7 +420,7 @@ class Renderer extends Plugin
         $html['boss'] = $this->renderDiv(
             [
                 'class' => 'boss-bar',
-                'id'    => 'boss',
+                'id' => 'boss',
                 'title' => 'Bosses Killed',
             ],
             (int)$data['boss_count']
@@ -427,7 +428,7 @@ class Renderer extends Plugin
         $html['points'] = $this->renderDiv(
             [
                 'class' => 'points-bar',
-                'id'    => 'points',
+                'id' => 'points',
                 'title' => 'Ppcc Points',
             ],
             (int)$data['points']
@@ -435,12 +436,12 @@ class Renderer extends Plugin
         $html['room'] = $this->renderDiv(
             [
                 'class' => 'text-bar',
-                'id'    => 'room',
+                'id' => 'room',
                 'title' => 'Current level room',
             ],
-            "ROOM: " . $data['room']
+            'ROOM: ' . $data['room']
         );
-        
+
         return $html;
     }
 }

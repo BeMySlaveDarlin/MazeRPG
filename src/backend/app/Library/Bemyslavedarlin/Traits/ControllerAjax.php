@@ -35,7 +35,7 @@ trait ControllerAjax
     {
         $username = $this->request->get('username');
         if (!empty($username)) {
-            $user = Users::findFirst(['username' => $username])->toArray();
+            $user = Users::findFirstByUsername($username)->toArray();
             if (empty($user['user_id'])) {
                 $response = [
                     'status' => 'error',
@@ -229,8 +229,8 @@ trait ControllerAjax
      */
     private function setReset()
     {
-        $user = Users::findFirst(['conditions' => 'user_id = ' . $this->user->user_id]);
-        $actions = Actions::find(['conditions' => 'user_id = ' . $this->user->user_id]);
+        $user = Users::findFirstByUserId($this->user->user_id);
+        $actions = Actions::findByUserId($this->user->user_id);
         foreach ($actions as $action) {
             $action->delete();
         }

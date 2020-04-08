@@ -2,9 +2,7 @@
 
 namespace Maze\Library\Bemyslavedarlin\Helpers;
 
-use Maze\Models\Actions;
 use Maze\Models\Users;
-use Nubs\RandomNameGenerator\All as RNGenerator;
 use Phalcon\Mvc\User\Plugin;
 
 /**
@@ -16,7 +14,6 @@ class Renderer extends Plugin
 {
     private $fRow = 7;
     private $fCol = 9;
-    private $generator;
     private $user;
     private $character = true;
 
@@ -26,9 +23,7 @@ class Renderer extends Plugin
     public function __construct()
     {
         $session_id = $this->session->getId();
-        $this->user = Users::findFirst(['conditions' => "session_id = '" . $session_id . "'"]);
-
-        $this->generator = RNGenerator::create();
+        $this->user = Users::findFirstBySessionId($session_id);
     }
 
     /**

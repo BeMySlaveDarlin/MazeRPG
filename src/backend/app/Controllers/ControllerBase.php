@@ -31,7 +31,7 @@ class ControllerBase extends Controller
     protected function getUser()
     {
         $session_id = $this->session->getId();
-        $this->user = Users::findFirst(['conditions' => "session_id = '" . $session_id . "'"]);
+        $this->user = Users::findFirstBySessionId($session_id);
         if (!$this->user) {
             $this->user = new Users();
             $this->user->session_id = $this->session->getId();
@@ -59,7 +59,7 @@ class ControllerBase extends Controller
     protected function getFormattedUserData()
     {
         $actions = [];
-        if (!empty($_actions = Actions::find(['conditions' => 'user_id = ' . $this->user->user_id]))) {
+        if (!empty($_actions = Actions::findByUserId($this->user->user_id))) {
             foreach ($_actions->toArray() as $action) {
                 $actions[$action['level']][$action['room']] = $action;
             }

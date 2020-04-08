@@ -3,7 +3,6 @@
 namespace Maze\Controllers;
 
 use Maze\Library\Bemyslavedarlin\Traits\ControllerAjax;
-use Maze\Models\Actions;
 use Maze\Models\Users;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
@@ -20,7 +19,7 @@ class IndexController extends ControllerBase
     public function indexAction()
     {
         $gameData['user'] = $this->getFormattedUserData();
-        $gameData['players'] = $this->getTopPlayers()->toArray();
+        $gameData['players'] = $this->getTopPlayers();
         $gameData['statuses'] = $this->renderer->render($gameData['user'], 'status');
         $gameData['playboard'] = $this->renderer->render($gameData['user'], 'playboard');
 
@@ -34,13 +33,15 @@ class IndexController extends ControllerBase
      */
     private function getTopPlayers()
     {
-        return Users::find(
+        $users = Users::find(
             [
                 'conditions' => "username IS NOT NULL AND username != '' and health_value > 0",
                 'order' => 'points DESC',
                 'limit' => 10,
             ]
         );
+
+        return false !== $users ? $users->toArray() : [];
     }
 
     /**

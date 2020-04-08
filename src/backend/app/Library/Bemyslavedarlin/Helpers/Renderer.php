@@ -1,21 +1,19 @@
 <?php
 
-namespace maze\library\bemyslavedarlin\helpers;
+namespace Maze\Library\Bemyslavedarlin\Helpers;
 
-use maze\models\Actions;
-use maze\models\Users;
-use Nubs\RandomNameGenerator\All as RNGenerator;
+use Maze\Models\Users;
 use Phalcon\Mvc\User\Plugin;
 
 /**
  * Class Renderer
- * @package maze\library\bemyslavedarlin\helpers
+ *
+ * @package Maze\Library\Bemyslavedarlin\Helpers
  */
 class Renderer extends Plugin
 {
     private $fRow = 7;
     private $fCol = 9;
-    private $generator;
     private $user;
     private $character = true;
 
@@ -25,9 +23,7 @@ class Renderer extends Plugin
     public function __construct()
     {
         $session_id = $this->session->getId();
-        $this->user = Users::findFirst(['conditions' => "session_id = '" . $session_id . "'"]);
-
-        $this->generator = RNGenerator::create();
+        $this->user = Users::findFirstBySessionId($session_id);
     }
 
     /**
@@ -393,14 +389,6 @@ class Renderer extends Plugin
             ],
             !empty($data['username']) ? $data['username'] : '- NONAME -'
         );
-        $html['level'] = $this->renderDiv(
-            [
-                'class' => 'text-bar',
-                'id' => 'level',
-                'title' => 'Level',
-            ],
-            'LVL: ' . $data['level']
-        );
         $html['health'] = $this->renderDiv(
             [
                 'class' => 'health-bar',
@@ -432,6 +420,14 @@ class Renderer extends Plugin
                 'title' => 'Ppcc Points',
             ],
             (int)$data['points']
+        );
+        $html['level'] = $this->renderDiv(
+            [
+                'class' => 'text-bar',
+                'id' => 'level',
+                'title' => 'Level',
+            ],
+            'LVL: ' . $data['level']
         );
         $html['room'] = $this->renderDiv(
             [

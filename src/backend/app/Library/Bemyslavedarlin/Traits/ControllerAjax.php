@@ -1,15 +1,16 @@
 <?php
 
-namespace maze\library\bemyslavedarlin\traits;
+namespace Maze\Library\Bemyslavedarlin\Traits;
 
-use maze\models\Actions;
-use maze\models\Users;
+use Maze\Models\Actions;
+use Maze\Models\Users;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 
 /**
  * Trait ControllerAjax
- * @package maze\library\bemyslavedarlin\traits
+ *
+ * @package Maze\Library\Bemyslavedarlin\Traits
  */
 trait ControllerAjax
 {
@@ -34,8 +35,9 @@ trait ControllerAjax
     {
         $username = $this->request->get('username');
         if (!empty($username)) {
-            $user = Users::findFirst(['username' => $username])->toArray();
-            if (empty($user['user_id'])) {
+            $user = Users::findFirstByUsername($username);
+
+            if (false !== $user) {
                 $response = [
                     'status' => 'error',
                     'message' => 'Username already in use',
@@ -228,8 +230,8 @@ trait ControllerAjax
      */
     private function setReset()
     {
-        $user = Users::findFirst(['conditions' => 'user_id = ' . $this->user->user_id]);
-        $actions = Actions::find(['conditions' => 'user_id = ' . $this->user->user_id]);
+        $user = Users::findFirstByUserId($this->user->user_id);
+        $actions = Actions::findByUserId($this->user->user_id);
         foreach ($actions as $action) {
             $action->delete();
         }

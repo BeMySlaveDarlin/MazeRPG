@@ -115,8 +115,8 @@ $di->setShared(
     'session',
     function ()
     {
-        ini_set('session.gc_maxlifetime', 604800);
-        session_set_cookie_params(604800);
+        ini_set('session.gc_maxlifetime', 31536000);
+        session_set_cookie_params(31536000);
 
         $session = new SessionAdapter();
         $session->start();

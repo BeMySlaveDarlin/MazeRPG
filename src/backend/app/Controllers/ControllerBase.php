@@ -1,10 +1,10 @@
 <?php
 
-namespace maze\controllers;
+namespace Maze\Controllers;
 
-use maze\library\bemyslavedarlin\helpers\Renderer;
-use maze\models\Actions;
-use maze\models\Users;
+use Maze\Library\Bemyslavedarlin\Helpers\Renderer;
+use Maze\Models\Actions;
+use Maze\Models\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
 
@@ -31,8 +31,8 @@ class ControllerBase extends Controller
     protected function getUser()
     {
         $session_id = $this->session->getId();
-        $this->user = Users::findFirst(['conditions' => "session_id = '" . $session_id . "'"]);
-        if (!$this->user) {
+        $this->user = Users::findFirstBySessionId($session_id);
+        if (false === $this->user) {
             $this->user = new Users();
             $this->user->session_id = $this->session->getId();
             $this->user->level = 1;
@@ -59,7 +59,8 @@ class ControllerBase extends Controller
     protected function getFormattedUserData()
     {
         $actions = [];
-        if (!empty($_actions = Actions::find(['conditions' => 'user_id = ' . $this->user->user_id]))) {
+        $_actions = Actions::findByUserId($this->user->user_id);
+        if (false !== $_actions) {
             foreach ($_actions->toArray() as $action) {
                 $actions[$action['level']][$action['room']] = $action;
             }

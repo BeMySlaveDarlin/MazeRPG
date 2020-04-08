@@ -394,14 +394,6 @@ class Renderer extends Plugin
             ],
             !empty($data['username']) ? $data['username'] : '- NONAME -'
         );
-        $html['level'] = $this->renderDiv(
-            [
-                'class' => 'text-bar',
-                'id' => 'level',
-                'title' => 'Level',
-            ],
-            'LVL: ' . $data['level']
-        );
         $html['health'] = $this->renderDiv(
             [
                 'class' => 'health-bar',
@@ -433,6 +425,14 @@ class Renderer extends Plugin
                 'title' => 'Ppcc Points',
             ],
             (int)$data['points']
+        );
+        $html['level'] = $this->renderDiv(
+            [
+                'class' => 'text-bar',
+                'id' => 'level',
+                'title' => 'Level',
+            ],
+            'LVL: ' . $data['level']
         );
         $html['room'] = $this->renderDiv(
             [

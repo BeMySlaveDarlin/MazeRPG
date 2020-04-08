@@ -1,15 +1,16 @@
 <?php
 
-namespace maze\library\bemyslavedarlin\helpers;
+namespace Maze\Library\Bemyslavedarlin\Helpers;
 
-use maze\models\Actions;
-use maze\models\Users;
+use Maze\Models\Actions;
+use Maze\Models\Users;
 use Nubs\RandomNameGenerator\All as RNGenerator;
 use Phalcon\Mvc\User\Plugin;
 
 /**
  * Class Renderer
- * @package maze\library\bemyslavedarlin\helpers
+ *
+ * @package Maze\Library\Bemyslavedarlin\Helpers
  */
 class Renderer extends Plugin
 {

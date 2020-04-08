@@ -1,10 +1,10 @@
 <?php
 
-namespace maze\controllers;
+namespace Maze\Controllers;
 
-use maze\library\bemyslavedarlin\helpers\Renderer;
-use maze\models\Actions;
-use maze\models\Users;
+use Maze\Library\Bemyslavedarlin\Helpers\Renderer;
+use Maze\Models\Actions;
+use Maze\Models\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
 

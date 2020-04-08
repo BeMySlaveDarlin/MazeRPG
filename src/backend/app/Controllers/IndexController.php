@@ -1,10 +1,10 @@
 <?php
 
-namespace maze\controllers;
+namespace Maze\Controllers;
 
-use maze\library\bemyslavedarlin\traits\ControllerAjax;
-use maze\models\Actions;
-use maze\models\Users;
+use Maze\Library\Bemyslavedarlin\Traits\ControllerAjax;
+use Maze\Models\Actions;
+use Maze\Models\Users;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Model\ResultSetInterface;

@@ -24,6 +24,6 @@
  - [Manual](/docs/install/MANUAL.md)
  - [Docker](/docs/install/DOCKER.md)
 
-[:alpha:]:     https://github.com/BeMySlaveDarlin/Inaccurate/tree/dev-alpha
+[:alpha:]:     https://github.com/BeMySlaveDarlin/MazeRPG/tree/dev-alpha
 [:phalcon:]:   https://github.com/phalcon/cphalcon
-[:license:]:   https://github.com/BeMySlaveDarlin/Inaccurate/blob/master/LICENSE.txt
+[:license:]:   https://github.com/BeMySlaveDarlin/MazeRPG/blob/master/LICENSE.txt

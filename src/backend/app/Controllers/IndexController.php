@@ -36,7 +36,7 @@ class IndexController extends ControllerBase
     {
         return Users::find(
             [
-                'conditions' => "username IS NOT NULL AND username != ''",
+                'conditions' => "username IS NOT NULL AND username != '' and health_value > 0",
                 'order' => 'points DESC',
                 'limit' => 10,
             ]

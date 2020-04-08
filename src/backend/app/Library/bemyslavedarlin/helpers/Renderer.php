@@ -1,15 +1,15 @@
 <?php
 
-namespace maze\Library\Bemyslavedarlin\Helpers;
+namespace maze\library\bemyslavedarlin\helpers;
 
-use maze\Models\Actions;
-use maze\Models\Users;
+use maze\models\Actions;
+use maze\models\Users;
 use Nubs\RandomNameGenerator\All as RNGenerator;
 use Phalcon\Mvc\User\Plugin;
 
 /**
  * Class Renderer
- * @package maze\Library\Bemyslavedarlin\Helpers
+ * @package maze\library\bemyslavedarlin\helpers
  */
 class Renderer extends Plugin
 {
@@ -393,6 +393,14 @@ class Renderer extends Plugin
             ],
             !empty($data['username']) ? $data['username'] : '- NONAME -'
         );
+        $html['level'] = $this->renderDiv(
+            [
+                'class' => 'text-bar',
+                'id' => 'level',
+                'title' => 'Level',
+            ],
+            'LVL: ' . $data['level']
+        );
         $html['health'] = $this->renderDiv(
             [
                 'class' => 'health-bar',
@@ -424,14 +432,6 @@ class Renderer extends Plugin
                 'title' => 'Ppcc Points',
             ],
             (int)$data['points']
-        );
-        $html['level'] = $this->renderDiv(
-            [
-                'class' => 'text-bar',
-                'id' => 'level',
-                'title' => 'Level',
-            ],
-            'LVL: ' . $data['level']
         );
         $html['room'] = $this->renderDiv(
             [

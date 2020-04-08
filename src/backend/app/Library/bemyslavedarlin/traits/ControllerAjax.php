@@ -1,15 +1,15 @@
 <?php
 
-namespace maze\Library\Bemyslavedarlin\Traits;
+namespace maze\library\bemyslavedarlin\traits;
 
-use maze\Models\Actions;
-use maze\Models\Users;
+use maze\models\Actions;
+use maze\models\Users;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 
 /**
  * Trait ControllerAjax
- * @package maze\Library\Bemyslavedarlin\Traits
+ * @package maze\library\bemyslavedarlin\traits
  */
 trait ControllerAjax
 {

@@ -2,13 +2,12 @@ FROM debian:buster
 
 LABEL maintainer="Aziz Muzafarov <bemyslavedarlin@gmail.com>"
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH=/root/composer/vendor/bin:/app/vendor/bin:/app/bin:$PATH
+ENV BUILD_DEPS='gcc g++ make autoconf libc-dev zlib1g-dev pkg-config'
 ENV COMPOSER_VERSION=1.9.1
 ENV PHP_VERSION=7.3
 ENV PHP_CONF_PATH=/etc/php/$PHP_VERSION/fpm/php.ini
 ENV FPM_CONF_PATH=/etc/php/$PHP_VERSION/fpm/pool.d/www.conf
-ENV PATH=/root/composer/vendor/bin:/app/vendor/bin:/app/bin:$PATH
-ENV BUILD_DEPS='gcc g++ make autoconf libc-dev zlib1g-dev pkg-config'
 
 RUN apt-get -y update \
     && apt-get install --no-install-recommends ${BUILD_DEPS} --no-install-suggests -yq \
@@ -30,7 +29,11 @@ RUN apt-get -y update \
         ca-certificates \
         software-properties-common \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
+    && rm -rf /tmp/* /var/tmp/* \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y
 
 RUN apt-get -y update \
     && apt-get install --no-install-recommends --no-install-suggests -yq \
@@ -52,7 +55,6 @@ RUN apt-get -y update \
         php$PHP_VERSION-mysql \
         php$PHP_VERSION-opcache \
         php$PHP_VERSION-pgsql \
-        php$PHP_VERSION-phalcon \
         php$PHP_VERSION-pspell \
         php$PHP_VERSION-readline \
         php$PHP_VERSION-recode \
@@ -60,10 +62,15 @@ RUN apt-get -y update \
         php$PHP_VERSION-tidy \
         php$PHP_VERSION-xml \
         php$PHP_VERSION-zip \
+        php-phalcon \
         php-amqp \
         php-igbinary \
         php-yaml \
-        php-pear
+        php-pear \
+    && rm -rf /tmp/* /var/tmp/* \
+    && apt-get autoremove -y \
+    && apt-get autoclean -y \
+    && apt-get clean -y
 
 RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d \
     && sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" ${PHP_CONF_PATH} \
@@ -82,20 +89,19 @@ RUN pecl update-channels \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/memcached.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-memcached.ini \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/memcached.ini /etc/php/$PHP_VERSION/cli/conf.d/20-memcached.ini \
     && ln -sf /etc/php/$PHP_VERSION/mods-available/imagick.ini /etc/php/$PHP_VERSION/fpm/conf.d/20-imagick.ini \
-    && ln -sf /etc/php/$PHP_VERSION/mods-available/imagick.ini /etc/php/$PHP_VERSION/cli/conf.d/20-imagick.ini
-
-COPY ./src/backend /app
-
-VOLUME /app/vendor \
-       /app/repository
-
-RUN mkdir -p /app \
+    && ln -sf /etc/php/$PHP_VERSION/mods-available/imagick.ini /etc/php/$PHP_VERSION/cli/conf.d/20-imagick.ini \
     && rm -rf /tmp/* /var/tmp/* \
     && apt-get autoremove -y \
     && apt-get autoclean -y \
     && apt-get clean -y
 
+RUN mkdir -p /app
+COPY ./src/backend /app
+
 WORKDIR /app
+
+VOLUME /app/vendor \
+       /app/repository
 
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
     && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
@@ -104,7 +110,6 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
         --install-dir=/usr/local/bin \
         --filename=composer \
         --version=${COMPOSER_VERSION} \
-    && composer global require hirak/prestissimo \
     && composer install --no-scripts --no-autoloader \
     && composer dump-autoload --optimize
 

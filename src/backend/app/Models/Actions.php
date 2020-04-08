@@ -1,6 +1,6 @@
 <?php
 
-namespace maze\Models;
+namespace maze\models;
 
 use Phalcon\Mvc\Model;
 

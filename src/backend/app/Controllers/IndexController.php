@@ -1,10 +1,10 @@
 <?php
 
-namespace maze\Controllers;
+namespace maze\controllers;
 
-use maze\Library\Bemyslavedarlin\Traits\ControllerAjax;
-use maze\Models\Actions;
-use maze\Models\Users;
+use maze\library\bemyslavedarlin\traits\ControllerAjax;
+use maze\models\Actions;
+use maze\models\Users;
 use Phalcon\Http\Response;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Model\ResultSetInterface;
@@ -36,7 +36,7 @@ class IndexController extends ControllerBase
     {
         return Users::find(
             [
-                'conditions' => "username IS NOT NULL AND username != '' and health_value > 0",
+                'conditions' => "username IS NOT NULL AND username != ''",
                 'order' => 'points DESC',
                 'limit' => 10,
             ]

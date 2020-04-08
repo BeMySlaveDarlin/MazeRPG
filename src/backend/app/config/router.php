@@ -7,7 +7,7 @@ $router = $di->getRouter(false);
 
 $router->setDefaults(
     [
-        'namespace'  => 'maze\Controllers',
+        'namespace'  => 'maze\controllers',
         'controller' => 'index',
         'action'     => 'index',
     ]
@@ -15,7 +15,7 @@ $router->setDefaults(
 $router->add(
     '/index/ajax',
     [
-        'namespace'  => 'maze\Controllers',
+        'namespace'  => 'maze\controllers',
         'controller' => 'index',
         'action'     => 'ajax',
     ]
@@ -23,7 +23,7 @@ $router->add(
 $router->add(
     '/ajax',
     [
-        'namespace'  => 'maze\Controllers',
+        'namespace'  => 'maze\controllers',
         'controller' => 'index',
         'action'     => 'ajax',
     ]

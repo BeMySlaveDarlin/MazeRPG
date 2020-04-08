@@ -113,10 +113,6 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.help-button', function () {
-
-    });
-
     $("#help-modal").dialog({
         autoOpen: false,
         modal: true,
@@ -129,7 +125,7 @@ $(document).ready(function () {
         }
     });
 
-    $(".help-button").on("click", function () {
-        $("#help-modal").dialog("open");
+    $(document).on('click', '.help-button', function () {
+      $("#help-modal").dialog("open");
     });
 });

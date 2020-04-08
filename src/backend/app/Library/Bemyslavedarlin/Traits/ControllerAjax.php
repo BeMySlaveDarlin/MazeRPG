@@ -35,8 +35,9 @@ trait ControllerAjax
     {
         $username = $this->request->get('username');
         if (!empty($username)) {
-            $user = Users::findFirstByUsername($username)->toArray();
-            if (empty($user['user_id'])) {
+            $user = Users::findFirstByUsername($username);
+
+            if (false !== $user) {
                 $response = [
                     'status' => 'error',
                     'message' => 'Username already in use',

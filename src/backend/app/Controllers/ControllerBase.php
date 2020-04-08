@@ -32,7 +32,7 @@ class ControllerBase extends Controller
     {
         $session_id = $this->session->getId();
         $this->user = Users::findFirstBySessionId($session_id);
-        if (!$this->user) {
+        if (false === $this->user) {
             $this->user = new Users();
             $this->user->session_id = $this->session->getId();
             $this->user->level = 1;
@@ -59,7 +59,8 @@ class ControllerBase extends Controller
     protected function getFormattedUserData()
     {
         $actions = [];
-        if (!empty($_actions = Actions::findByUserId($this->user->user_id))) {
+        $_actions = Actions::findByUserId($this->user->user_id);
+        if (false !== $_actions) {
             foreach ($_actions->toArray() as $action) {
                 $actions[$action['level']][$action['room']] = $action;
             }
